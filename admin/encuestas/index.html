@@ -1,0 +1,105 @@
+<?
+$data = array(
+		"encuesta_id" => "$encuesta_id",
+		"respuesta_id" => "$respuesta_id",
+		"pregunta" => "$pregunta",
+		"respuesta" => "$respuesta",
+		"nivel" => "$nivel");
+
+?>
+<html>
+<head>
+<title>Administrador de Encuestas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF">
+<?
+include('../include/connect.inc');
+include('function.inc');
+
+if ($a == "nueva_encuesta") { 
+?>
+<font face="verdana" color="red">Se agrego una nueva encuesta</font>
+<?
+mysql_query("insert into encuestas (id, pregunta, nivel) values ('','$pregunta','')");
+select($PHP_SELF, $data);
+if ($encuesta_id != "0") {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+} elseif ($a == "nueva_respuesta") { 
+?>
+<font face="verdana" color="red">Se agrego una nueva respuesta</font>
+<?
+mysql_query("insert into respuestas (id, encuesta_id, respuesta) values ('','$encuesta_id','$respuesta')");
+echo mysql_error();
+select($PHP_SELF, $data);
+if ($encuesta_id != "0" && isset($encuesta_id)) {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+} elseif ($a == "borrar_encuesta") { 
+?>
+<font face="verdana" color="red">La encuesta fue eliminada</font>
+<?
+mysql_query("delete from encuestas where id='$encuesta_id'");
+mysql_query("delete from respuestas where encuesta_id='$encuesta_id'");
+mysql_query("delete from votos where encuesta_id='$encuesta_id'");
+echo mysql_error();
+select($PHP_SELF, $data);
+if ($encuesta_id != "0" && isset($encuesta_id)) {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+} elseif ($a == "borrar_respuesta") { 
+?>
+<font face="verdana" color="red">La respuesta fue eliminada</font>
+<?
+mysql_query("delete from respuestas where id='$respuesta_id'");
+mysql_query("delete from votos where encuesta_id='$encuesta_id' and respuesta_id='$respuesta_id'");
+select($PHP_SELF, $data);
+$data[id] = "";
+if ($encuesta_id != "0" && isset($encuesta_id)) {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+} elseif ($a == "encuesta_actual") { 
+?>
+<font face="verdana" color="red">La Encuesta ahora es Actual</font>
+<?
+mysql_query("update encuestas set nivel='0'");
+mysql_query("update encuestas set nivel='1' where id='$encuesta_id'");
+select($PHP_SELF, $data);
+$data[id] = "";
+if ($encuesta_id != "0" && isset($encuesta_id)) {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+} else {
+select($PHP_SELF, $data);
+if ($encuesta_id != "0" && isset($encuesta_id)) {
+respuestas($PHP_SELF, $data);
+}
+if ($encuesta_id != "0" && isset($encuesta_id)){ 
+nueva_respuesta($PHP_SELF, $data);
+}
+nueva_encuesta($PHP_SELF, $data);
+}
+?>
+</body>
+</html>

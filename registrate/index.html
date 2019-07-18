@@ -1,0 +1,433 @@
+<%
+include('../include/connect.inc');
+$usuario = escapeshellcmd($usuario);
+$password = crypt($clave);
+
+$datos = array(
+	"nombre" => "$nombre",
+	"apellido" => "$apellido",
+	"usuario" => "$usuario",
+	"clave" => "$clave",
+	"confirmacion" => "$confirmacion",
+	"dia" => "$dia",
+	"mes" => "$mes",
+	"anio" => "$anio",
+	"sexo" => "$sexo",
+	"ciudad" => "$ciudad",
+	"pais" => "$pais",
+	"checkmail" => "$checkmail",
+	"direccion" => "$direccion",
+	"cp" => "$cp",
+	"telefono" => "$telefono",
+	"localidad" => "$localidad",
+	"ocupacion" => "$ocupacion",
+	"conexion" => "$conexion",
+	"uso" => "$uso",
+	"idioma" => "$idioma",
+	"npenarol" => "$npenarol",
+	"nsportsya" => "$npsportsya",
+	"nterceros" => "$nterceros",
+	"mail" => "$mail",
+	"compras" => "$compras",
+	"credito" => "$credito",
+	"encuesta" => "$encuesta"
+	);
+%>
+<html>
+<head>
+<title>Registrate como Hincha</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../style/general_style.css">
+</head>
+<body leftmargin="0" topmargin="0" bgcolor="#000000">
+<%
+function formulario($PHP_SELF, $datos) {
+%>
+
+<form name="form" action="<% echo $PHP_SELF %>">              
+  <table width="400" border="0" cellspacing="3" cellpadding="3" bgcolor="#000000">
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+        <p align="center"><font size="4">Formulario</font><b><font size="4"> <font color="#FFCC00">de 
+          registro</font></font></b></p>
+        <p>A partir de ahora, pasar&aacute;s a ser uno de los nuevos miembros 
+          de Pe&ntilde;arol. <span class="TexVer1Naranja">Te damos la bienvenida 
+          y con mucha alegr&iacute;a esperamos que disfrutes de los servicios 
+          de este nuevo sitio.</span> <br>
+          Por favor, llena todos los campos que aparecen a continuaci&oacute;n.<br>
+          <br>
+        </p>
+        <table border="0" cellspacing="1" cellpadding="1">
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Nombre</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="nombre" size="20" maxlength="20" value="<% echo $datos["nombre"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Apellido</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="apellido" size="20" maxlength="20" value="<% echo $datos["apellido"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Nombre de usuario</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="usuario" size="20" maxlength="20" value="<% echo $datos["usuario"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Contrase&ntilde;a</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="password" name="clave" size="20" maxlength="20" value="<% echo $datos["clave"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Confirmar Contrase&ntilde;a</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="password" name="confirmacion" size="20" maxlength="20" value="<% echo $datos["comprobacion"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Fecha de Nacimiento</b></td>
+            <td class="TexVer1Blanca"> 
+              <select name="dia">
+                <%
+		$dia = 1;
+while ($dia < 32) {
+		if ($datos[dia] == $dia) {
+		echo "<option value=\"$dia\" selected>$dia</option>\n";
+		} else {
+		echo "<option value=\"$dia\">$dia</option>\n";
+		}
+		$dia ++;
+		}
+	        %> 
+              </select>
+              <select name="mes">
+                <%
+		$mes = 1;
+while ($mes < 13) {
+		if($datos[mes] == $mes) {
+		echo "<option value=\"$mes\" selected>$mes</option>\n";
+		} else {
+		echo "<option value=\"$mes\">$mes</option>\n";
+		}
+		$mes ++;
+		}
+	        %> 
+              </select>
+              <select name="anio">
+                <%
+		$anio = 2000;
+while ($anio > 1919) {
+		if ($datos[anio] == $anio) {
+		echo "<option value=\"$anio\" selected>$anio</option>\n";
+		} else {
+		echo "<option value=\"$anio\">$anio</option>\n";
+		}
+		$anio --;
+		}
+	        %> 
+              </select>
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Sexo</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="radio" name="sexo" value="M">
+              Masculino 
+              <input type="radio" name="sexo" value="F">
+              Femenino </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Ciudad</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="ciudad" size="20" maxlength="20" value="<% echo $datos["ciudad"] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Pa&iacute;s</b></td>
+            <td class="TexVer1Blanca"> 
+              <select name="pais">
+                <option value="argentina">Argentina</option>
+                <option value="bolivia">Bolivia</option>
+                <option value="brasil">Brasil</option>
+                <option value="chile">Chile</option>
+                <option value="colombia">Colombia</option>
+                <option value="paraguay">Paraguay</option>
+                <option value="peru">Perú</option>
+                <option value="uruguay" selected>Uruguay</option>
+                <option value="venezuela">Venezuela</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <p>
+          <input type="checkbox" name="webmail" checked value="1">
+          Quiero tener un e-mail @capenarol.com</p>
+        <p class="TexVer1Naranja">De aqu&iacute; en adelante no es obligatorio 
+          llenar los campos.</p>
+        <table border="0" cellspacing="1" cellpadding="1">
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Direcci&oacute;n</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="direccion" size="20" maxlength="20" value="<% echo $datos[direccion] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>C&oacute;digo Postal</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="cp" size="20" maxlength="20" value="<% echo $datos[cp] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Tel&eacute;fono</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="telefono" size="20" maxlength="20" value="<% echo $datos[telefono] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Localidad</b></td>
+            <td class="TexVer1Blanca"> 
+              <input type="text" name="localidad" size="20" maxlength="20" value="<% echo $datos[localidad] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Ocupaci&oacute;n</b></td>
+            <td class="TexVer1Blanca"> 
+              <select name="ocupacion">
+                <option value="profesional">Profesional</option>
+                <option value="empleado">Empleado</option>
+                <option value="comerciante">Comerciante</option>
+                <option value="autonomo">Aut&oacute;nomo</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="0">Otra</option>
+              </select>
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Lugar de Conexi&oacute;n</b></td>
+            <td class="TexVer1Blanca"> 
+              <select name="conexion">
+                <option value="casa">Casa </option>
+                <option value="trabajo">Trabajo </option>
+                <option value="lugare publico">Lugar P&uacute;blico</option>
+                <option value="casa de estudios">Casa de Estudios</option>
+              </select>
+            </td>
+          </tr>
+          <tr> 
+            <td class="TexVer1Blanca" align="right"><b>Horario</b></td>
+            <td class="TexVer1Blanca"> 
+              <select name="horario">
+                <option value="mañana">Ma&ntilde;ana</option>
+                <option value="tarde">Tarde</option>
+                <option value="noche">Noche</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <span class="TexVer1Naranja"> 
+        <input type="checkbox" name="npenarol" value="1">
+        Quiero recibir las noticias de Pe&ntilde;arol<br>
+        <input type="checkbox" name="nsportsya" value="1">
+        Quiero recibir las noticias de sportsya.com<br>
+        <input type="checkbox" name="nterceros" value="1">
+        Quiero recibir noticias de terceros</span> <br>
+        <br>
+        <table width="350" border="0" cellspacing="1" cellpadding="1">
+          <tr> 
+            <td width="300" class="TexVer1Blanca" align="right">&iquest;Qu&eacute; 
+              otro e-mail posee usted?</td>
+            <td width="100" class="TexVer1Blanca"> 
+              <input type="text" name="mail" size="10" value="<% echo $datos[mail] %>">
+            </td>
+          </tr>
+          <tr> 
+            <td width="300" class="TexVer1Blanca" align="right">&iquest;Acostumbra 
+              a hacer compras por internet?</td>
+            <td width="100" class="TexVer1Blanca"> 
+              <input type="radio" name="compras" value="1" <% if ($datos[compras]){ echo "checked"; }%>>
+              Si 
+              <input type="radio" name="compras" value="0" <% if (!$datos[compras]){ echo "checked"; }%>>
+              No </td>
+          </tr>
+          <tr> 
+            <td width="300" class="TexVer1Blanca" align="right">&iquest;Posee 
+              tarjeta de cr&eacute;dito?</td>
+            <td width="100" class="TexVer1Blanca"> 
+              <input type="radio" name="credito" value="1" <% if ($datos[credito]){ echo "checked"; }%>>
+              Si 
+              <input type="radio" name="credito" value="0" <% if (!$datos[compras]){ echo "checked"; }%>>
+              No </td>
+          </tr>
+          <tr> 
+            <td width="300" class="TexVer1Blanca" align="right">&iquest;Usted 
+              est&aacute; de acuerdo a responder encuestas por internet?</td>
+            <td width="100" class="TexVer1Blanca"> 
+              <input type="radio" name="encuesta" value="1" <% if ($datos[encuesta]){ echo "checked"; }%>>
+              Si 
+              <input type="radio" name="encuesta" value="0" <% if (!$datos[encuesta]){ echo "checked"; }%>>
+              No </td>
+          </tr>
+        </table>
+        <br>
+        <span class="TexVer1Blanca">El Usuario declara haber leído previamente 
+        la POLÍTICA DE PROTECCIÓN DE DATOS del Sitio Oficial del Club Atl&eacute;tico 
+        Pe&ntilde;arol., publicada en la URL www.capenarol.com y declara aceptar 
+        plenamente y sin reservas que los datos de carácter personal que proporciona 
+        con ocasión de su suscripción al presente servicio serán incorporados 
+        a un fichero automatizado y tratados en la forma indicada en la POLÍTICA 
+        DE PROTECCIÓN DE DATOS de del Sitio Oficial del Club Atl&eacute;tico Pe&ntilde;arol.</span><br>
+          <br>
+          <input type="submit" value="Enviar Formulario" name="submit">
+          <input type="reset" name="Submit" value="Borrar">        
+        <p>&nbsp;</p>
+      </td>
+  </tr>
+</table>
+</form>
+
+<%
+}
+if (!isset($nombre)) {
+formulario($PHP_SELF, $datos);
+} else {
+
+mysql_query("select * from usuarios where usuario='$usuario'");
+
+if (mysql_affected_rows() == "1") {
+%>
+
+  <table width="400" border="0" cellspacing="3" cellpadding="3" bgcolor="#000000">
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+        
+      <p align="center"><font size="4">Error en el formulario</font><b><font size="4"> 
+        <font color="#FFCC00">de registro</font></font></b></p>
+		</td>
+		</tr>
+    <tr align="center"> 
+    <td class="TexVer1Blanca"> El usuario que ha elegido ya existe..</td>
+	</tr>
+
+
+
+<%
+formulario($PHP_SELF, $datos);
+
+} elseif ($clave != $confirmacion)  {
+%>
+
+  <table width="400" border="0" cellspacing="3" cellpadding="3" bgcolor="#000000">
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+        <p align="center"><font size="4">Error en el formulario</font><b><font size="4"> <font color="#FFCC00">de 
+          registraci&oacute;n</font></font></b></p>
+		</td>
+		</tr>
+    <tr align="center"> 
+    <td class="TexVer1Blanca"> 
+	Las claves no coinciden..<br>	
+	</td>
+	</tr>
+
+
+<%
+formulario($PHP_SELF, $datos);
+} else {
+
+mysql_query("insert into usuarios values ('','$usuario','$nombre','$apellido','$clave','','$dia','$mes','$anio','$sexo','$ciudad','$pais','$checkmail','$direccion','$cp','$telefono','$localidad','$ocupacion','$conexion','$uso','$idioma','$npenarol','$nsportsya','$nterceros','$mail','$compras','$credito','$encuesta')");
+$time = time();
+mysql_db_query("forum", "insert into user values ('','2','$usuario','$clave','$mail','','','','','','','FN: $dia/$mes/$anio Pais: $pais Sexo: $sexo Ciudad: $ciudad Ocupacion: $ocupacion','','0','$nterceros','','Junior Member','','$time','1','','-1','','','','','','1')");
+%>
+
+  <table width="400" border="0" cellspacing="3" cellpadding="3" bgcolor="#000000">
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+        <p align="center"><font size="4">Formulario</font><b><font size="4"> <font color="#FFCC00">de 
+          registraci&oacute;n</font></font></b></p>
+		</td>
+		</tr>
+    <tr align="center"> 
+    <td class="TexVer1Blanca"> 
+	Gracias por registrarse en capenarol.com a partir de ahora usted puede:
+	</td>
+	</tr>
+<%
+if ($webmail == "1") {
+exec("/usr/bin/sudo /usr/sbin/adduser $usuario -s /bin/false -p$password");
+exec("/usr/bin/sudo /usr/sbin/edquota -p quotaman $usuario");
+exec("/usr/bin/sudo /bin/echo '$usuario' >> /etc/ftpusers");
+%>
+
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+<li> Enviar y recibir correo desde nuestro Webmail. <br>
+	</td>
+	</tr>
+
+<%
+}
+if ($npenarol == "1") {
+%>
+
+    <tr align="center"> 
+      <td class="TexVer1Blanca"> 
+<li> Recibir las ultimas noticias de Peñarol. <br>
+	</td>
+	</tr>
+
+<%
+}
+
+if ($nsportsya == "1") {
+%>
+    <tr align="center"> 
+
+      <td class="TexVer1Blanca"> 
+
+<li> Recibir las ultimas noticias de sportsYA!. <br>
+
+	</td>
+	</tr>
+
+<%
+}
+
+if ($nterceros == "1") {
+%>
+
+    <tr align="center"> 
+
+      <td class="TexVer1Blanca"> 
+
+<li> Recibir mensajes de otros usuarios. <br>
+
+	</td>
+	</tr>
+
+
+<%
+}
+%>
+
+    <tr align="center"> 
+
+      <td class="TexVer1Blanca"> 
+
+<li> Acceder a la sala de chat e ingresar en los foros de discusión de Peñarol. <br>
+
+	</td>
+	</tr>
+
+<%
+  }
+}
+%>
+
+</table>
+</table></table></body>
+</html>

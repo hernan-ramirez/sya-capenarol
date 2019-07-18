@@ -1,0 +1,114 @@
+<table width="150" border="0" cellspacing="1" cellpadding="1">
+<%
+
+if ($partido[local]) {  
+
+$result = mysql_query ("select * from cambios where partido_id = '$partido[id]' order by minuto");
+
+$color = 0; 
+
+while ($row = mysql_fetch_array($result)) {
+
+$resultado = mysql_query ("select * from jugadores where id = '$row[entra_id]'");
+
+$entra = mysql_fetch_array($resultado);
+
+$resultado = mysql_query ("select * from jugadores where id = '$row[sale_id]'");
+
+$sale = mysql_fetch_array($resultado);
+
+
+%>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "$row[minuto]' Entra $entra[nombre] $entra[apellido]" %></td>
+</tr>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "Sale $sale[nombre] $sale[apellido]" %></td>
+</tr>
+<%
+
+  }
+
+} else {
+
+$result = mysql_query ("select * from cambiosr where partido_id = '$partido[id]' order by minuto");
+
+$color = 0; 
+
+while ($row = mysql_fetch_array($result)) {
+
+$resultado = mysql_query ("select * from jugadoresr where id = '$row[jugador_id]'");
+
+$datos = mysql_fetch_array($resultado);
+
+%>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "$row[minuto]' $datos[nombre] $datos[apellido]" %></td>
+</tr>
+<%
+
+  }
+
+}
+
+%>
+</table>
+</td>
+<td>
+<table width="150" border="0" cellspacing="1" cellpadding="1">
+<%
+
+if (!$partido[local]) {  
+
+$result = mysql_query ("select * from cambios where partido_id = '$partido[id]' order by minuto");
+
+$color = 0; 
+
+while ($row = mysql_fetch_array($result)) {
+
+$resultado = mysql_query ("select * from jugadores where id = '$row[entra_id]'");
+
+$entra = mysql_fetch_array($resultado);
+
+$resultado = mysql_query ("select * from jugadores where id = '$row[sale_id]'");
+
+$sale = mysql_fetch_array($resultado);
+
+
+%>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "$row[minuto]' Entra $entra[nombre] $entra[apellido]" %></td>
+</tr>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "Sale $sale[nombre] $sale[apellido]" %></td>
+</tr>
+<%
+
+  }
+
+} else {
+
+$result = mysql_query ("select * from cambiosr where partido_id = '$partido[id]' order by minuto");
+
+$color = 0; 
+
+while ($row = mysql_fetch_array($result)) {
+
+$resultado = mysql_query ("select * from jugadoresr where id = '$row[jugador_id]'");
+
+$datos = mysql_fetch_array($resultado);
+
+%>
+<tr> 
+<td width="150" class="TexAri1Negra" <% if ($color == "1") { echo "bgcolor=\"#F0F0E8\""; $color = 0; } else { $color = 1; } %>><% echo "$row[minuto]' $datos[nombre] $datos[apellido]" %></td>
+</tr>
+<%
+
+  }
+
+}
+
+%>
+</table>
+
+

@@ -1,0 +1,381 @@
+<%
+include ('../include/connect.inc');
+$result = mysql_db_query("penarol", "select * from jugadores where id='$id'");
+$jugadordata = mysql_fetch_array($result);
+$apellido = ereg_replace(" ", "", $jugadordata[apellido]);
+if (isset($votando)) {
+  if ($mostrar == "seguimiento") {
+     if (isset($$apellido)) {
+		$data = explode (",", $$apellido);
+		foreach ($data as $dat) {
+			if (ereg("local", $dat)) {
+				$local = 1;
+			}
+		}
+		if ($local != "1"){
+		setcookie("$apellido", "$votando:local,".$$apellido, time()+86400);
+ 	    }
+	 } else {
+		setcookie("$apellido", "$votando".":local", time()+8400);
+	 }
+   } else {
+	if (isset ($$apellido)) {
+		$data = explode (",", $$apellido);
+		foreach ($data as $dat) {
+     	if (ereg ("inter", $dat)) {
+				$inter = 1;
+			}
+		}
+		if ($inter != "1"){
+		setcookie("$apellido", $$apellido.",$votando:inter", time()+86400);
+ 		}
+	 } else {
+		setcookie("$apellido", "$votando".":inter", time()+8400);
+	}
+   }
+  }
+$result = mysql_db_query("penarol", "select id from partidos where cargado='1' order by date desc");
+$row = mysql_fetch_row($result);
+$partido_id = $row[0];
+if (isset($votando)) {
+  if ($mostrar == "seguimiento") {
+    $campeonato = "l";
+  } else {
+    $campeonato = "i";
+  }
+$time = time();
+mysql_db_query("penarol","insert into puntaje values('','$votando','$partido_id','$id','$campeonato','$time')");
+}
+mysql_select_db("penarol");
+%>
+<html>
+<head>
+<title>Ficha de Jugadores</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../style/general_style.css">
+</head>
+<style type="text/css">
+a:link       { color: black; text-decoration: none }
+a:visited    { color: black; text-decoration: none }
+a:hover      { color: white; text-decoration: none }
+</style>
+<body bgcolor="#FFFFFF">
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><img src="../img/img_plantel/<% echo $id %>.jpg" width="300" height="120"></td>
+  </tr>
+  <tr>
+    <td>
+      <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="15">
+        <tr>
+          <td align="center" width="100">
+            <% 
+          if (!isset($mostrar) || $mostrar == "datos") { %>
+            <a href="#"><span class="TexVer1Naranja"><b>Datos Pers.</b></span></a>
+            <% } else { %>
+            <a href="index.html?id=<% echo $id %>&mostrar=datos"><span class="TexVer1Gris"><b>Datos
+            Pers.</b></span></a>
+            <% } %>
+          </td>
+          <td align="center" width="100">
+            <% 
+          if ($mostrar == "trayectoria") { %>
+            <a href="#"><span class="TexVer1Naranja"><b>Trayectoria</b></span></a>
+            <% } else { %>
+            <a href="index.html?id=<% echo $id %>&mostrar=trayectoria"><span class="TexVer1Gris"><b>Trayectoria</b></span></a>
+            <% } %>
+          </td>
+          <td align="center" width="100">
+            <% 
+          if ($mostrar == "seguimiento" || $mostrar == "seguimientoi") { %>
+            <a href="#"><span class="TexVer1Naranja"><b>Seguimiento</b></span></a>
+            <% } else { %>
+            <a href="index.html?id=<% echo $id %>&mostrar=seguimiento"><span class="TexVer1Gris"><b>Seguimiento</b></span></a>
+            <% } %>
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFF">
+          <td align="center" width="100"><img src="../../img/img_general/blanco.gif" width="1" height="3"></td>
+          <td align="center" width="100"><img src="../../img/img_general/blanco.gif" width="1" height="1"></td>
+          <td align="center" width="100"><img src="../../img/img_general/blanco.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="15">
+        <%
+        if (!isset($mostrar) || $mostrar == "datos") {
+        $result = mysql_query("select * from jugadores where id='$id'");
+        $row = mysql_fetch_array($result, 1);
+        if (mysql_affected_rows() == "0") { 
+        %>
+         <tr>
+           <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+           <td align="center" class="TexVer1Negro" width="300" bgcolor="#D0CCD0" colspan="2">No hay datos disponibles para este jugador</td>
+           <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+        <%
+        } else {
+        while (list ($key, $val) = each ($row)) {
+        if ($key != "id") {
+        %>
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="100" bgcolor="#D0CCD0"><% 
+if ($key == "nombre") {
+echo "Nombre";
+} elseif ($key == "apellido") {
+echo "Apellido";
+} elseif ($key == "lugarnac") {
+echo "Lugar de Nac.";
+} elseif ($key == "fechanac") {
+echo "Fecha de Nac.";
+} elseif ($key == "condicion") {
+echo "Condici&oacute;n";
+} elseif ($key == "puesto") {
+echo "Puesto";
+} elseif ($key == "estatura") {
+echo "Estatura";
+} elseif ($key == "peso") {
+echo "Peso";
+}
+%>       </td>
+         <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+         <td align="center" class="TexVer1Negro" width="197" bgcolor="#F0F4F0"><% echo $val %></td>
+         <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+      </tr>
+   </table>
+   <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+      <tr>
+        <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+   </table>
+   <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <%
+    }
+  }
+} 
+} elseif ($mostrar == "trayectoria") {
+    $result = mysql_query("select * from trayectoria where jugador_id='$id'");
+        if (mysql_affected_rows() == "0") { %>
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="300" bgcolor="#D0CCD0" colspan="2">No hay datos disponibles para este jugador</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <%
+        } else { %>
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#D0CCD0">Año</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="197" bgcolor="#F0F4F0">Club</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <% 
+        while ($row = mysql_fetch_array($result, 1)) {
+        %>
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="100" bgcolor="#D0CCD0"><% echo $row[anio] %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="197" bgcolor="#F0F4F0"><% echo $row[club] %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+      <tr>
+        <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+      </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <%
+    }
+  } 
+} elseif ($mostrar == "seguimiento" || $mostrar == "seguimientoi") {
+     if ($mostrar == "seguimiento") {
+         $campeonato = "l";
+         } else {
+         $campeonato = "i";
+         }
+         $partidos = mysql_query("select * from partidos where campeonato='$campeonato' and cargado='1'");
+         $result = mysql_query("select * from partidos where campeonato='$campeonato' and cargado='1' order by date desc");
+         $ultimo_partido = mysql_fetch_array($result);
+         $titulares = mysql_query("select * from titulares where jugador_id='$id' and campeonato='$campeonato'");
+         $cambios = mysql_query("select * from cambios where entra_id='$id' and campeonato='$campeonato'");
+         $goles = mysql_query("select * from goles where jugador_id='$id' and campeonato='$campeonato'");
+         $amarillas = mysql_query("select * from amonestados where jugador_id='$id'");
+         $rojas = mysql_query("select * from expulsados where jugador_id='$id'");
+         $ultimo_presencia = 0;
+         $presencia = 0;
+         $ultimo_goles = 0;
+         $goles_num = 0;
+         $ultimo_amarillas = 0;
+         $amarillas_num = 0;
+         $ultimo_rojas = 0;
+         $rojas_num = 0;
+      while ($row = mysql_fetch_array($titulares)) {
+          if ($row[partido_id] == $ultimo_partido[id]) {
+         	  $ultimo_presencia++;
+          } 
+          $presencia++;
+	  }
+	  while ($row = mysql_fetch_array($cambios)) {
+	    if ($row[partido_id] == $ultimo_partido[id]) {
+	      $ultimo_presencia++;
+	      }
+	      $presencia++;
+	    }
+	  while ($row = mysql_fetch_array($goles)) {
+	    if ($row[partido_id] == $ultimo_partido[id]) {
+	      $ultimo_goles++;
+	      }
+	      $goles_num++;
+	    }
+       while ($row = mysql_fetch_array($amarillas)) {
+	    if ($row[partido_id] == $ultimo_partido[id]) {
+	      $ultimo_amarillas++;
+        }
+        $amarillas_num++;
+        }
+        while ($row = mysql_fetch_array($rojas)) {
+        if ($row[partido_id] == $ultimo_partido[id]) {
+          $ultimo_rojas++;
+        }
+        $rojas_num++;
+        }
+        %>
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="97" bgcolor="#FFFFFF"><%
+          if ($mostrar == "seguimiento") { %>LOCAL<%
+          } else { %>INTERNAC.<%
+          } %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0">Ultimo 
+            Partido<? include "../include/hitbox.inc" ?></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0">Campeonato</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="97" bgcolor="#D0CCD0">Presencia</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $ultimo_presencia %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $presencia %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="97" bgcolor="#D0CCD0">Goles</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $ultimo_goles %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $goles_num %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="97" bgcolor="#D0CCD0">Amarillas</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $ultimo_amarillas %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $amarillas_num %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="left" class="TexVer1Negro" width="97" bgcolor="#D0CCD0">Rojas</td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $ultimo_rojas %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+          <td align="center" class="TexVer1Negro" width="100" bgcolor="#F0F4F0"><% echo $rojas_num %></td>
+          <td width="1" class="TexVer1Negro"><img src="../../img/img_general/spacer.gif" width="1" height="15"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" height="1">
+        <tr>
+          <td width="300"><img src="../../img/img_general/spacer.gif" width="300" height="1"></td>
+        </tr>
+    </table>
+    <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+			<td>
+        <%
+	      include('include/puntaje.html'); 
+          }
+        %>
+			</td>
+        </tr>
+    </table>
+
+    <? include "../include/foother_ow.php3" ?>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

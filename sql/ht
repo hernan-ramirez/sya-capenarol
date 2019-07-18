@@ -1,0 +1,6 @@
+AuthType Basic
+AuthName "Area Restringida"
+AuthUserFile	/usr/local/apache/conf/password
+require valid-user
+# Order allow,deny
+# Allow from 10.10.10.

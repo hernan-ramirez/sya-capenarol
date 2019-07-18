@@ -1,0 +1,139 @@
+<%
+include('../include/connect.inc'); 
+include('../include/header.inc');
+include('../include/noticias.inc');
+
+$result = mysql_query("select * from noticias where id='$id'");
+
+$row = mysql_fetch_array($result);
+
+if ($row[nivel] != 1) {
+$char_noticia = $char_unoticia;
+} 
+
+$time = time();
+%>
+
+<html>
+<head>
+<title>Modifica Noticias</title>
+<style fprolloverstyle>a:hover      { color: #FFCC00 }
+</style>
+<script>
+<!--
+function openwin(theURL,winName,features) {
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+</head>
+
+<body link="#808080" vlink="#808080" alink="#808080">
+
+<p align="center">
+
+<font face="Verdana">
+<%
+if (isset($eliminar)) {
+  if ($eliminar == "1") {
+
+  mysql_query("delete from noticias where id='$id'");
+
+  muestra($id, $char_noticia); 
+%>
+
+noticia eliminada...
+  
+<%
+} else {
+%>
+<div align="center">
+  <center>
+<table width="80%" border="1" cellspacing="0">
+<tr>
+<td bgcolor="#C0C0C0">
+ <p align="center">
+ Esta seguro que desea eliminar la noticia <% echo $titulo %>?</p>
+</td>
+</tr>
+<tr>
+<td>
+<form action="<% echo $PHP_SELF %>" method="POST">
+  <p align="center">
+  <input type="hidden" name="eliminar" value="1"><input type="hidden" name="id" value="<% echo $id %>"><br>
+  <br>
+  <input type="submit" value="eliminar">
+</form>
+</td>
+</tr>
+</table>
+  </center>
+</div>
+<p align="center">
+<%
+
+muestra($id, $char_noticia);
+
+  }
+} else {
+
+
+if ($a == "a") {
+
+mysql_query("update noticias set titulo='$titulo', contenido='$contenido', imagenchica='$imagenchica', imagengrande='$imagengrande', fecha='$time' where id='$id'");
+print mysql_error();
+
+if ($nivel == 1) {
+
+mysql_query("update configuracion set valor='$char' where nombre='char_noticia'");
+
+} else {
+
+mysql_query("update configuracion set valor='$char' where nombre='char_unoticia'");
+
+}
+
+if ($nivel == 1 || $nivel == 2 || $nivel == 3 || $nivel == 4) {
+
+mysql_query("update noticias set nivel='0' where nivel='$nivel'");
+mysql_query("update noticias set nivel='$nivel' where id='$id'");
+
+} 
+
+muestra($id, $char);
+
+%>
+
+Modificación Completada ...<br>
+<br>
+
+<%
+} elseif ($id == "nuevanoticia") {
+  if ($a == "b") {
+  
+    if ($nivel == 1 || $nivel == 2 || $nivel == 3 || $nivel == 4) {
+      mysql_query("update noticias set nivel = '0' where nivel = '$nivel'");
+    }
+    
+    mysql_query("insert into noticias values ('','$titulo','$descripcion','$imagenchica','$imagengrande','$time','$nivel')");
+
+    mysql_query("select * from noticias");
+
+    $id = mysql_affected_rows();
+
+    muestra($id, $char_noticia);
+} else {
+
+  nueva($id, $char_noticia);
+
+  }
+} else {
+
+muestra($id, $char_noticia);
+
+  }
+}
+%>
+</font>
+</body>
+</html>

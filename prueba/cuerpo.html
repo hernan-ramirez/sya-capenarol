@@ -1,0 +1,176 @@
+<html>
+<? include "db_connect_penarol.inc" ?>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF">
+<form  method="post" action="insertar.php3">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="6%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Orden</font></div>
+      </td>
+      <td width="25%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Jugador</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Am.</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">R.</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          1</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          2</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          3</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          4</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          5</font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Gol 
+          6</font></div>
+      </td>
+      <td width="25%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Cambio 
+          </font></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"><font face="Arial, Helvetica, sans-serif" size="2">Min.</font></div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="6%"> 
+        <div align="center"> 
+          <input type="text" name="orden" size="2">
+        </div>
+      </td>
+      <td width="25%"> 
+        <div align="center"> 
+
+          <select name="jugador">
+<?
+$query = "SELECT id,nombre,apellido from jugadores";
+$result = mysql_query($query);
+	if ($result != 0){
+		while ($row = mysql_fetch_array($result)){					
+ ?> 
+			<option><? echo "$row['nombre']" . "$row['apellido']"; 
+}
+}
+?>
+
+
+          </select>
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield2" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield3" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield4" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield5" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield6" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield7" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield8" size="2">
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield9" size="2">
+        </div>
+      </td>
+      <td width="15%"> 
+        <div align="center"> 
+          <select name="select2">
+          </select>
+        </div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="text" name="textfield10" size="2">
+        </div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="6%"> 
+        <div align="center"></div>
+      </td>
+      <td width="25%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"></div>
+      </td>
+      <td width="15%"> 
+        <div align="center"></div>
+      </td>
+      <td width="3%"> 
+        <div align="center"> 
+          <input type="submit" name="Submit" value="Agregar">
+        </div>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

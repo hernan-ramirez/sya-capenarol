@@ -1,0 +1,89 @@
+<%
+function form($nota, $size) {
+%>
+<center>
+<form action"<% echo $php_self %>" enctype="multipart/form-data" method="post">
+  <input type="file" name="file" size="20"><br>
+  <br>
+  <input type="hidden" name="nota" value="<% echo $nota %>"> <input type="hidden" name="size" value="<% echo $size %>">
+  <input type="hidden" name="accion" value="agregar"> <input type="submit" value="agregar">
+</form>
+</center>
+<% 
+}
+%>
+
+<p><font face="Verdana">
+<%
+if ($accion == "agregar") { 
+  
+  if (isset($file)) {
+    if ($file_size == 0) {
+      echo "ADVERTENCIA: no ingresó ninguna imagen.";
+      form($nota, $size);
+      } elseif (!ereg("image", $file_type)) {
+      echo "ADVERTENCIA: $file_type no es un formato de imagen válido.";
+      } else {
+    rename($file, "../../img/img_$nota/$size/$file_name");
+    echo "se copio la imagen"; 
+    form($nota, $size);
+    
+    }
+
+ } else {
+
+  form($nota, $size);
+
+ }
+
+
+} elseif ($accion == "mostrar") {
+  if (isset($file)) { 
+    echo "<img src=\"/img/img_$nota/$size/$file\"><br>";
+    echo "<a href=\"imagenes.html?nota=$nota&size=$size&accion=mostrar\">volver</a>";
+  } else {
+    $handle=opendir("../../img/img_$nota/$size");
+    while (($file = readdir($handle))!=false) {
+      if ($file != "." && $file != "..") {
+        $kb = filesize("../../img/img_$nota/$size/$file") / 1024;
+        $kb = round ($kb);
+                echo "<img src=\"../images/layout.gif\"> <a href=\"$PHP_SELF?nota=$nota&size=$size&file=$file&accion=mostrar\"> $file ($kb Kb)</a><br>";
+      }
+    }  
+    closedir($handle); 
+  }
+} elseif ($accion == "borrar") {
+
+   if (isset($file)) {
+     if (isset($confirm)) {
+     unlink("../../img/img_$nota/$size/$file");
+     echo "imagen eliminada";
+     form($nota, $size);
+     
+     } else {
+     %>
+ Est&aacute; seguro que desea borrar la imagen <% echo $file %>?<br>
+</p>
+<form>
+  <input type="hidden" name="accion" value="borrar"><input type="hidden" name="nota" value="<% echo $nota %>"><input type="hidden" name="size" value="<% echo $size %>"><input type="hidden" name="file" value="<% echo $file %>"><input type="submit" name="confirm" value="eliminar imagen">
+</form>
+     <%
+       }
+ 
+     } else { %>
+<form>
+  <select name="file">
+	 <%
+    $handle=opendir("../../img/img_$nota/$size");
+    while (($file = readdir($handle))!=false) {
+      if ($file != "." && $file != "..") {
+        echo "<option value=\"$file\">$file</option>";
+      }
+    } %>
+  </select> <input type="hidden" name="accion" value="borrar"> <input type="hidden" name="nota" value="<% echo $nota %>">
+  <input type="hidden" name="size" value="<% echo $size %>"> <input type="submit" value="eliminar imagen">
+</form>
+ 
+<%  }
+}
+%>

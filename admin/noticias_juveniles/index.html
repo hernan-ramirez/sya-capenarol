@@ -1,0 +1,44 @@
+<?
+$data = array(
+		"id" => "$id",
+		"link" => "$link",
+		"titulo" => "$titulo",
+		"contenido" => "$contenido",
+		"nivel" => "$nivel",
+		"chars" => "$chars");
+?>
+<html>
+<head>
+<title>Noticias de Primera División</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF">
+<?
+include('../include/connect.inc');
+include('function.inc');
+
+
+if ($a == "nueva") { ?>
+<font face="verdana" color="red">Se agrego una nueva noticia</font>
+<? mysql_query("insert into notas values ('','$link','$titulo','$contenido','$nivel','$chars')");
+select($PHP_SELF, $id);
+formulario($PHP_SELF, $data);
+} elseif ($a == "modificar") { ?>
+<font face="verdana" color="red">La noticia fue modificada</font>
+<? mysql_query("update notas set link='$link',titulo='$titulo',contenido='$contenido',nivel='$nivel',chars='$chars' where id='$data[id]'");
+echo mysql_error();
+select($PHP_SELF, $id);
+formulario($PHP_SELF, $data);
+} elseif ($a == "Borrar") { ?>
+<font face="verdana" color="red">La noticia fue eliminada</font>
+<? mysql_query("delete from notas where id='$data[id]'");
+select($PHP_SELF, $id);
+$data[id] = "";
+formulario($PHP_SELF, $data);
+} else {
+select($PHP_SELF, $id);
+formulario($PHP_SELF, $data);
+}
+?>
+</body>
+</html>

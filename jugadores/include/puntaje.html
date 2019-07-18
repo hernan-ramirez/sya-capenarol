@@ -1,0 +1,205 @@
+<% 
+
+
+
+$result = mysql_db_query("penarol", "select * from puntaje where jugador_id='$id' and partido_id='$partido_id' and campeonato='$campeonato'");
+
+
+
+while ($row = mysql_fetch_array($result)) {
+
+  
+
+  $pro_partido = $row[puntos] + $pro_partido;
+
+
+
+}
+
+
+
+if (mysql_affected_rows() != "0") {
+
+  
+
+  $pro_partido = $pro_partido / mysql_affected_rows();
+
+
+
+}
+
+
+
+
+
+$result = mysql_db_query("penarol", "select * from puntaje where jugador_id='$id' and campeonato='$campeonato'");
+
+
+
+while ($row = mysql_fetch_array($result)) {
+
+  
+
+  $pro_campeonato = $row[puntos] + $pro_campeonato;
+
+
+
+}
+
+
+
+
+
+if (mysql_affected_rows() != "0") {
+
+  
+
+  $pro_campeonato = $pro_campeonato / mysql_affected_rows();
+
+
+
+}
+
+if (isset($$apellido)) {
+  if ($mostrar == "seguimiento") {
+    
+	if (ereg("local", $$apellido)) {
+		$data = explode (",", $$apellido);
+		$explode = explode (":", $data[0]);
+		$votando = $explode[0];
+		$voto = 1;
+	}
+  } else {
+	if (ereg("inter", $$apellido)) {
+		$data = explode (",", $$apellido);
+		$explode = explode (":", $data[1]);
+		$votando = $explode[0];
+		$voto = 1;
+	}
+  }
+}
+
+if (isset($votando) || $voto == "1") {
+
+%>
+<table bgcolor="#000000" border="0" cellspacing="1">
+   <tr> 
+    <td class="TexVer1Blanca" width="100" align="center">&nbsp;</td>
+    <td class="TexVer1Naranja" width="197" align="center"><b>Tu voto: </b></td>
+    <td class="TexVer1Blanca" width="197" align="center"><b><% echo $votando %></b></td>
+   </tr>
+
+        <tr> 
+
+          <td bgcolor="#D0CCD0" class="TexVer1Negro" width="100" align="left">Puntaje</td>
+
+          <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center"><% echo round($pro_partido, 2) %> puntos</td>
+
+          <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center"><% echo round($pro_campeonato, 2) %> puntos</td>
+
+        </tr>
+
+      </table>
+
+      <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+
+        <tr>
+
+          <td>
+
+            <table width="300" border="0" cellspacing="1" cellpadding="1">
+
+              <tr bgcolor="#666666"> 
+
+                <td><% if ($mostrar == "seguimiento") { %><a href="<% $PHP_SELF %>?mostrar=seguimientoi&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Internacional</b></span></a><% } else { %><a href="<% $PHP_SELF %>?mostrar=seguimiento&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Local</b></span></a><% } %></td>
+
+              </tr>
+
+           </table>
+		</td>
+		</tr>
+		</table>
+		
+
+            
+
+<%
+
+            } elseif ($ultimo_presencia == "0") {
+%>
+
+        <table bgcolor="#000000" border="0" cellspacing="1">
+            <tr>
+            <td class="TexVer1Naranja" colspan="3" align="center"><b>No jug&oacute; en el &uacute;ltimo partido.</b></td>
+          </tr>
+          <tr>
+            <td bgcolor="#D0CCD0" class="TexVer1Negro" width="100" align="left">Puntaje</td>
+            <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center">No jugado</td>
+            <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center"><% echo round($pro_campeonato, 2) %> puntos</td>
+          </tr>
+        </table>
+      <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td>
+            <table width="300" border="0" cellspacing="1" cellpadding="1">
+              <tr bgcolor="#666666">
+                <td><% if ($mostrar == "seguimiento") { %><a href="<% $PHP_SELF %>?mostrar=seguimientoi&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Internacional</b></span></a><% } else { %><a href="<% $PHP_SELF %>?mostrar=seguimiento&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Local</b></span></a><% } %></td>
+              </tr>
+            </table>
+			</td>
+		 </tr>
+		</table>
+<%
+            } else {
+
+            %>
+	<table bgcolor="#000000" border="0" cellspacing="1">
+            <form action="<% $PHP_SELF %>" name="voto" method="POST">
+            <tr> 
+            <td class="TexVer1Naranja" colspan="2" align="center"><b>Califica la actuaci&oacute;n del jugador</b></td>
+            <td class="TexVer1Negro" width="100" align="center">
+            <input type="hidden" name="mostrar" value="<% echo $mostrar %>">
+            <input type="hidden" name="id" value="<% echo $id %>">
+            <select name="votando" style="font-family:verdana; font-size:9px; background-color: #F0F4F0;" onChange="document.voto.submit()">
+            <option value="0">selecciona</option>
+<% 
+  $i = 10;
+  while ($i > 0) { %>
+		<option value="<% echo $i %>"><% echo $i %> puntos</option>
+		<% 
+		$i--;
+  } 
+  %>
+             </select>
+            </td>
+          </tr>
+          <tr> 
+            <td bgcolor="#D0CCD0" class="TexVer1Negro" width="100" align="center">Puntaje</td>
+            <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center"><% echo round($pro_partido, 2) %> puntos </td>
+            <td bgcolor="#F0F4F0" class="TexVer1Negro" width="197" align="center"><% echo round($pro_campeonato, 2) %> puntos </td>
+          </tr>
+        </form>
+      </table>
+      <table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+        <tr>
+          <td>
+            <table width="300" border="0" cellspacing="1" cellpadding="1">
+              <tr bgcolor="#666666"> 
+                <td><% if ($mostrar == "seguimiento") { %><a href="<% $PHP_SELF %>?mostrar=seguimientoi&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Internacional</b></span></a><% }else { %><a href="<% $PHP_SELF %>?mostrar=seguimiento&id=<% echo $id %>"><img src="../../img/img_general/go.gif" width="12" height="10" align="left" border="0">
+                <span class="TexAri1Blanca"><b>Ver Campa&ntilde;a Local</b></span></a><% } %></td>
+                </tr>
+             </table>
+		   </td>
+		  </tr>
+		</table>
+            <%
+            }
+            %>
+

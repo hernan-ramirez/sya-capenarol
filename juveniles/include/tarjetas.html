@@ -1,0 +1,173 @@
+<%
+if ($mostrar == "tarjetas") {
+%>
+ 
+                             <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8" class="TexVer1Blanca"><b>Tarjetas</b></td>
+                                </tr>
+                              </table>
+                              
+<table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" vspace="0" hspace="0">
+  <tr bgcolor="#000000" align="center"> 
+                                  
+    <td bgcolor="#D0CCD0" class="TexAri1Negra" width="180"> <b>Nombre</b></td>
+                                  
+    <td bgcolor="#F0F4F0" class="TexAri1Negra" width="50"><img src="../img/img_general/tarj_roja.gif" width="16" height="16"> 
+    </td>
+                                  
+    <td bgcolor="#F0F4F0" class="TexAri1Negra" width="50"><img src="../img/img_general/tarj_amarilla.gif" width="17" height="16"> 
+    </td>
+                                </tr>
+  
+<%
+
+$jugador = array();
+
+$result = mysql_query("select * from jugadores");
+
+while ($row = mysql_fetch_array($result)) {
+
+$rojas = mysql_query("select count(*) from expulsados where jugador_id='$row[id]'");
+
+$roja = mysql_fetch_row($rojas);
+
+$jugador[$row[id]] = $roja[0];
+
+}
+
+arsort($jugador);
+
+while (list ($id, $rojanum) = each($jugador)) {
+
+$result = mysql_query("select id,nombre,apellido from jugadores where id='$id'");
+
+$row = mysql_fetch_array($result);
+
+$amarillas = mysql_query("select count(*) from amonestados where jugador_id='$id'");
+
+$amarilla = mysql_fetch_array($amarillas);
+
+$amarillanum = $amarilla[0];
+
+%>
+	
+                              <tr align="center"> 
+                                  
+    <td width="180" bgcolor="#D0CCD0" class="TexAri1Negra" align="left"> <a href="javascript:openwin('../jugadores/?id=<% echo $row[id] %>','ficha_partido','width=350,height=314,scrollbars=1')"  class="TexAri1Negra"><% echo $row[nombre] %> 
+      <% echo $row[apellido] %></a></td>
+                                  
+    <td width="50" bgcolor="#F0F4F0" class="TexAri1Negra"> <% echo $rojanum %></td>
+                                  
+    <td width="50" bgcolor="#F0F4F0" class="TexAri1Negra"> <% echo $amarillanum %></td>
+                              </tr>
+
+
+<%
+}
+%>
+</table>
+
+
+
+<% 
+} else {
+%>
+
+                        <table width="140" border="0" cellspacing="10" cellpadding="0">
+                          <tr> 
+                            <td> 
+                              <table width="94" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#FFFFFF"><b>Tarjetas</b></font></td>
+                                </tr>
+                              </table>
+                              
+      <table width="140" cellspacing="1" cellpadding="1" bgcolor="#000000" bordercolorlight="#000000" bordercolordark="#000000" border="0" align="center">
+        <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>Club</b></font></td>
+                                  
+          <td bgcolor="#F8E000"> 
+            <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#000000"><b>R</b></font></div>
+                                  </td>
+                                  
+          <td bgcolor="#F8E000"> 
+            <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#000000"><b>A</b></font></div>
+                                  </td>
+                                </tr>
+
+<%
+
+$jugador = array();
+
+$result = mysql_query("select * from jugadores");
+
+while ($row = mysql_fetch_array($result)) {
+
+$rojas = mysql_query("select count(*) from expulsados where jugador_id='$row[id]'");
+
+$roja = mysql_fetch_row($rojas);
+
+$jugador[$row[id]] = $roja[0];
+
+}
+
+arsort($jugador);
+
+$num = 0;
+
+while (list ($id, $rojanum) = each($jugador)) {
+
+$num++;
+
+if ($num > 6) {
+break;
+}
+
+$result = mysql_query("select id,nombre,apellido from jugadores where id='$id'");
+
+$row = mysql_fetch_array($result);
+
+$amarillas = mysql_query("select count(*) from amonestados where jugador_id='$id'");
+
+$amarilla = mysql_fetch_array($amarillas);
+
+$amarillanum = $amarilla[0];
+
+%>
+
+                                <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><% echo substr($row[nombre], 0, 1); %>. <% echo $row[apellido] %></font></td>
+                                  
+          <td bgcolor="#F8E000"> 
+            <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><% echo $rojanum %></b></font></div>
+                                  </td>
+                                  
+          <td bgcolor="#F8E000"> 
+            <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><% echo $amarillanum %></b></font></div>
+                                  </td>
+                                </tr>
+<%
+}
+%>
+                                <tr>
+                                  
+          <td bgcolor="#FFFFFF" class="TexAri1Blanca" width="90">&nbsp;</td>
+                                  <td bgcolor="#F8E000" colspan="2">
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><a href="?mostrar=tarjetas"  class="TexAri1Negra">Todos</a></b></font></div>
+                                  </td>
+                                </tr>
+                              </table>
+                              </td>
+                              </tr>
+                            </table>
+<%
+
+}
+%>
+
+
+
+

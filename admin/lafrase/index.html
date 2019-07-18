@@ -1,0 +1,218 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<% include('../include/connect.inc');
+
+
+function titulos($id, $PHP_SELF) {
+%>
+<div align="center">
+  <center>
+  <form name="primero" method="POST" action="<% echo $PHP_SELF %>">
+  <table border="1" width="100%" cellspacing="0">
+    <tr>
+      <td width="100%" bgcolor="#C0C0C0">
+        <p align="center"><font face="Verdana" size="2">Elegir frases:</font></td>
+    </tr>
+    <tr>
+      <td width="100%">
+        <p align="center"><font face="Verdana" size="2"><select name="id" onChange="document.primero.submit()">
+        <option value="nueva">Nueva Frase</option>
+        <%
+        $result = mysql_query("select * from lafrase");
+        
+        while ($row = mysql_fetch_array($result)) {
+          
+          if ($row[0] == $id) {
+            
+            echo "<option value=\"$row[0]\" selected>$row[1]</option>\n";
+          
+          } else {
+          
+            echo "<option value=\"$row[0]\">$row[1]</option>\n";
+                  
+          }
+        
+        }
+        %>
+        </select></font></td>
+    </tr>
+  </table>
+  </form>
+  </center>
+</div>
+<br><br>
+<%
+}
+
+function formulario($id, $PHP_SELF) {
+
+
+if (empty($id)) {
+
+  $result = mysql_query("select * from lafrase where nivel='1'");
+  
+  } else {
+  
+  $result = mysql_query("select * from lafrase where id='$id'");
+    
+  } 
+
+
+$row = mysql_fetch_array($result);
+
+%>
+<form name="segundo" method="POST" action="<% echo $PHP_SELF %>">
+<div align="center">
+  <center>
+<table width="100%" border="1" cellspacing="0">
+<tr>
+<td bgcolor="#C0C0C0">
+<p align="center"><font face="Verdana" size="2">Título:</font>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center"><font face="Verdana" size="2">
+<input type="hidden" name="id" value="<% echo $id %>">
+<%
+if ($id == "nueva") { 
+  echo "<input type=\"hidden\" name=\"confirma\" value=\"1\">\n";
+}
+%> 
+<input type="text" name="titulo" size="50" value="<% echo $row[titulo] %>"></font></p>
+</td>
+</tr>
+<tr>
+<td bgcolor="#C0C0C0">
+<p align="center"><font face="Verdana" size="2">Contenido:</font>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center"><font face="Verdana" size="2"><textarea name="contenido" rows="10" cols="50"><% echo $row[contenido] %></textarea>
+</font></p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center"><font face="Verdana" size="2">Frase actual <input type="checkbox" name="nivel" value="1" <% if ($row[nivel] == 1) { echo "checked"; } %>></font>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center"><input type="submit" value="modificar">&nbsp;<input type="submit" value="eliminar" name="eliminar">
+</td>
+</tr>
+</table>
+
+
+  </center>
+</div>
+
+
+</form>
+<%
+}
+if (isset($eliminar)) {
+
+  if (isset($confirma)) {
+    
+    mysql_query("delete from lafrase where id='$id'");
+
+    titulos($id, $PHP_SELF);      
+      
+    formulario($id, $PHP_SELF);
+    
+    } else {
+    %>
+    <br><font face="Verdana" size="2"><br>
+</font>
+<div align="center">
+  <form method="POST" action="<% echo $PHP_SELF %>" >
+  <center>
+    <table width="80%" border="1" cellspacing="0">
+    <tr>
+    <td bgcolor="#C0C0C0">
+    <p align="center">
+    <font face="Verdana" size="2">
+    Esta seguro que desea eliminar la frase "<% echo $titulo %>"?
+    </font>
+    </p>
+    </td>
+    </tr>
+    <tr>
+    <td bgcolor="#FFFFFF"><input type="hidden" name="confirma" value="1">
+    <input type="hidden" name="id" value="<% echo $id %>">
+    <p align="center"><input type="submit" value="eliminar" name="eliminar">
+    </td>
+    </tr>
+    </table>
+  </center>
+  </form>
+</div>
+    <%
+    }
+    
+} else {
+
+
+if (isset($titulo)) {
+  
+  if ($id == "nueva") {
+
+    if (isset($confirma)) {
+      
+      if ($nivel == 1) {
+      
+        mysql_query("update lafrase set nivel='0'");
+  
+      }
+      
+      mysql_query("insert into lafrase values ('', '$titulo', '$contenido', '$nivel')");
+
+      titulos($id, $PHP_SELF);      
+      
+      formulario($id, $PHP_SELF);
+    
+    } else {
+
+      titulos($id, $PHP_SELF);      
+
+      formulario("nueva", $PHP_SELF);
+    
+    }
+   
+  } else {
+    
+    if ($nivel == 1) {
+    
+      mysql_query("update lafrase set nivel='0'");
+    
+    }
+
+    mysql_query("update lafrase set titulo='$titulo', contenido='$contenido', nivel='$nivel' where id='$id'");
+
+    titulos($id, $PHP_SELF);      
+
+    formulario($id, $PHP_SELF);
+  
+  } 
+  
+}  else {
+
+   titulos($id, $PHP_SELF);      
+
+   formulario($id, $PHP_SELF);
+
+}
+  
+}  
+  
+%>
+
+</body>
+</html>

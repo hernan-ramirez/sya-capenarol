@@ -1,0 +1,196 @@
+<% include ('../include/connect.inc'); %>
+<!-- saved from url=(0022)http://internet.e-mail -->
+<html>
+<head>
+<title>Resultados de la búsqueda</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../style/general_style.css" type="text/css">
+<style type="text/css">
+<!--
+a:link {  text-decoration: none}
+a:visited {  text-decoration: none}
+-->
+</style>
+<script language="JavaScript">
+<!-- 
+function openwin(theURL,winName,features) {
+  window.open(theURL,winName,features);
+}
+//-->
+</Script>
+</head>
+
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" bgcolor="#FFFFFF" link="#000000" vlink="#000000" alink="#000000">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" background="../img/img_primera_div/backer_top.gif">
+<tr> 
+<td> 
+<table width="760" border="0" cellspacing="0" cellpadding="0" vspace="0" hspace="0">
+<tr> 
+<td width="141"><img src="../img/img_primera_div/capenarol.gif" width="141" height="30"></td>
+<td width="619" valign="middle" background="../img/img_primera_div/backer_top.gif" class="TexAri1Gris"><span class="TexVer1Naranja"><b> 
+&nbsp;&nbsp;Resultados de la b&uacute;squeda</b></span></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr bgcolor="#FFCC00"> 
+    <td> <br>
+<table width="233" border="00" cellspacing="0" cellpadding="0" height="33" align="left">
+<tr> 
+          <td><img src="../img/img_banners/468x60uoltecnologia2.gif" width="233" height="33" align="left"></td>
+</tr>
+</table>
+<br>
+<br>
+<br>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr bgcolor="#000000"> 
+<td><img src="../img/img_general/spacer.gif" width="150" height="1"></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="1" cellpadding="1">
+<% 
+
+if (!isset($m)) {
+
+$m = 0;
+
+} 
+
+if ($tipo == "capenarol") {
+
+include('include/capenarol.html');
+ 
+} elseif ($tipo == "noticias") {
+
+include('include/noticias.html');
+
+} elseif ($tipo == "entrevistas") {
+
+include('include/entrevistas.html');
+
+} elseif ($tipo == "plantel") {
+
+include('include/plantel.html');
+
+}
+%>
+<tr>
+<td class="TexAri1Negra">
+<br>
+<% if ($num == "0") { %>
+No se encontraron documentos.
+<% } else { %>
+Listando desde el documento <% echo $m + 1 %>.<br>
+<% echo $num %> titulos encontrados. 
+<% } %>
+</td>
+</tr>
+</table>
+<br>
+<br>
+      <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
+        <tr>
+          <td class="TexAri1Blanca" height="14"> <%
+if ($m > 9) {
+%> <a href="<% echo $PHP_SELF %>?tipo=<% echo $tipo %>&q=<% echo $q %>&m=<% echo $m - 10 %>"  class="TexAri1Blanca"> 
+            << &Uacute;ltimos 10</a><% 
+} 
+
+
+if ($num > $m + 10) { 
+%> <a href="<% echo $PHP_SELF %>?tipo=<% echo $tipo %>&q=<% echo $q %>&m=<% echo $m + 10 %>"  class="TexAri1Blanca"> 
+            Pr&oacute;ximos 10 >> </a> <% } %> <? include "../include/hitbox.inc" ?></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr bgcolor="#CCCCCC"> 
+<td>
+<table width="298" border="0" cellspacing="0" cellpadding="0">
+<form name="buscar" method="get" action="<% echo $PHP_SELF %>">
+<tr> 
+<td width="100" valign="middle"> 
+<input type="radio" name="tipo" value="capenarol" <% if ($tipo == "capenarol") { echo "checked"; } %>>
+<span class="TexAri1Negra">en Capenarol</span></td>
+<td width="100" valign="middle"> 
+<input type="radio" name="tipo" value="noticias" <% if ($tipo == "noticias") { echo "checked"; } %>>
+<span class="TexAri1Negra">en Noticias</span> </td>
+<td rowspan="2" width="100" align="center"> 
+<input type="text" name="q" size="8" value="<% echo $q %>"  style="font-family:Arial;font-size:10">
+<input type="image" src="../img/img_general/go.gif" border="0"> 
+</td>
+</tr>
+<tr> 
+<td width="100" valign="middle"> 
+<input type="radio" name="tipo" value="entrevistas" <% if ($tipo == "entrevistas") { echo "checked"; } %>>
+<span class="TexAri1Negra">en Entrevistas</span></td>
+<td width="100" valign="middle"> 
+<input type="radio" name="tipo" value="plantel" <% if ($tipo == "plantel") { echo "checked"; } %>>
+<span class="TexAri1Negra">en Plantel</span></td>
+</tr>
+</form>
+</table>
+</td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr bgcolor="#000000"> 
+</tr>
+</table>
+</table>
+<? include "../include/foother.php3" ?>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

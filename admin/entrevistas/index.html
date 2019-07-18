@@ -1,0 +1,130 @@
+<%
+include('../include/connect.inc'); 
+include('../include/header.inc');
+include('../include/entrevistas.inc');
+
+
+$time = time();
+%>
+<html>
+
+<head>
+<title>Modifica Entrevista</title>
+<style fprolloverstyle>a:hover      { color: #FFCC00 }
+</style>
+<script>
+<!--
+function openwin(theURL,winName,features) {
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+</head>
+
+<body link="#808080" vlink="#808080" alink="#808080">
+
+<p align="center">
+
+<font face="Verdana">
+<%
+if (isset($eliminar)) {
+  if ($eliminar == "1") {
+
+  mysql_query("delete from entrevistas where id='$id'");
+
+  muestra($id, $char_entrevista); 
+%>
+
+entrevista eliminada...
+  
+<%
+} else {
+%>
+<div align="center">
+  <center>
+<table width="80%" border="1" cellspacing="0">
+<tr>
+<td bgcolor="#C0C0C0">
+ <p align="center">
+ Esta seguro que desea eliminar la entrevista <% echo $titulo %>?</p>
+</td>
+<tr>
+<td>
+<form action="<% echo $PHP_SELF %>" method="POST">
+  <p align="center">
+  <input type="hidden" name="eliminar" value="1"><input type="hidden" name="id" value="<% echo $id %>"><br>
+  <br>
+  <input type="submit" value="eliminar">
+</form>
+</td>
+</tr>
+</table>
+  </center>
+</div>
+<p align="center">
+<%
+
+muestra($id, $char_entrevista);
+
+  }
+} else {
+
+
+if ($a == "a") {
+
+mysql_query("update entrevistas set titulo='$titulo', contenido='$contenido', imagenchica='$imagenchica', imagengrande='$imagengrande', fecha='$time' where id='$id'");
+print mysql_error();
+
+
+mysql_query("update configuracion set valor='$char' where nombre='char_entrevista'");
+
+if ($nivel == 1) {
+
+mysql_query("update entrevistas set nivel='0'");
+mysql_query("update entrevistas set nivel='1' where id='$id'");
+
+
+}
+
+muestra($id, $char);
+
+%>
+
+Modificación Completada ...<br>
+<br>
+
+<%
+} elseif ($id == "nuevaentrevista") {
+  if ($a == "b") {
+  
+    if ($nivel == "1") {
+      mysql_query("update entrevistas set nivel = '0'");
+    }
+    
+    mysql_query("insert into entrevistas values ('','$titulo','$descripcion','$imagenchica','$imagengrande','$time','$nivel')");
+
+    mysql_query("select * from entrevistas");
+
+    $id = mysql_affected_rows();
+
+    muestra($id, $char_entrevista);
+} else {
+
+  nueva($id, $char_entrevista);
+
+  }
+} else {
+
+muestra($id, $char_entrevista);
+
+  }
+}
+%>
+
+</body>
+
+</html>
+
+

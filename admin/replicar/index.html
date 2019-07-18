@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>
+Administrador Replicar Base de Datos.
+</title>
+</head>
+<body>
+<% 
+if ($confirmacion == 1) {
+system("./ReplicaDatabase");
+echo $datos;
+%>
+<div align="center">
+  <center>
+<table width="80%">
+<tr>
+<td>
+<p align="center"><font face="Verdana" size="2">La base de datos fué replicada con
+éxito.</font></p>
+</td>
+</tr>
+</table>
+  </center>
+</div>
+<%
+
+} else {
+
+%>
+<form action="<% echo $PHP_SELF %>" method="POST">
+<div align="center">
+  <center>
+  <table border="1" width="80%" cellspacing="0">
+    <tr>
+      <td width="100%" bgcolor="#C0C0C0">
+        <p align="center"><font face="Verdana" size="2">Esta seguro que desea
+        copiar el contenido de capenaroladmin a capenarol?<br>
+        &nbsp;Los datos de la página <a href="/">http://www.capenarol.com/</a>
+        se modificarán con los datos de <a href="/preview">http://www.capenarol.com/preview</a></font></td>
+    </tr>
+    <tr>
+      <td width="100%">
+        <p align="center">
+        <font face="Verdana" size="2">
+        <input type="hidden" name="confirmacion" value="1">
+        <input type="submit" value="Copiar la Database (no hay deshacer)">
+        </font>
+        </td>
+    </tr>
+  </table>
+  </center>
+</div>
+</form>
+<%
+}
+%>
+<br>
+<br>
+<center><a href="/admin"><font face="verdana" size="2">menú principal</font></a></center>
+</body>
+</html>

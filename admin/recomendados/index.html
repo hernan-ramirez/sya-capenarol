@@ -1,0 +1,92 @@
+<% 
+
+include('../include/connect.inc');
+
+function form($PHP_SELF) { %>
+<html>
+<head>
+<title>
+Administrador de recomendados.
+</title>
+</head>
+<body>  <form method="POST" action="<% echo $PHP_SELF %>">
+<div align="center">
+
+<center>
+  <table border="1" width="100%" cellspacing="0">
+    <tr>
+      <td width="50%" colspan="2" bgcolor="#C0C0C0" align="center">
+        <p align="center"><font color="#000000" face="Verdana" size="2">Administrador
+        de recomendados</font></td>
+    </tr>
+     <tr>
+      <td width="50%" bgcolor="#C0C0C0" align="center">
+        <p align="center"><font color="#000000" face="Verdana" size="2">Titulo</font></td>
+      <td width="50%" bgcolor="#C0C0C0" align="center">
+        <p align="center"><font color="#000000" face="Verdana" size="2">URL</font></td>
+    </tr>
+  
+<% 
+$result = mysql_query("select * from recomendados");
+while ($row = mysql_fetch_array  ($result) ) {
+%>
+    <tr>
+      <td width="50%" align="center">
+        <p align="center"><input type="text" size="30" name="titulo_<% echo $row[id] %>" value="<% echo $row[1] %>" maxlength="20"></p>
+      </td>
+      <td width="50%" align="center"><input type="text" size="30" name="url_<% echo $row[id] %>" value="<% echo $row[2] %>"></td>
+    </tr>
+<%
+}
+%>  
+      <tr>
+      <td width="50%" align="center">
+        <p align="center"><input type="submit" value="aceptar"></p>
+      </td>
+       <td width="50%" align="center"><input type="reset" value="borrar"></td>
+      </tr>
+
+  </table>
+  </center>
+</div>
+</form>
+<%
+}
+
+$a = 0;
+
+$b = 1;
+
+$id = 1;
+
+$data = array( $titulo_1, $url_1, 
+				$titulo_2, $url_2, 
+				$titulo_3, $url_3, 
+				$titulo_4, $url_4, 
+				$titulo_5, $url_5, 
+				$titulo_6, $url_6, 
+				$titulo_7, $url_7, 
+				$titulo_8, $url_8 );
+ 
+if (isset($titulo_1)) {
+
+while ($a < 16) { 
+
+
+mysql_query("update recomendados set titulo='$data[$a]', url='$data[$b]' where id = '$id'");
+
+$a = $a + 2;
+$b = $b + 2;
+$id++;
+
+  }
+  
+  echo "<font size=\"2\" face=\"verdana\"><center> modificación completada...</center></font>\n";
+  
+}
+
+form($PHP_SELF);
+
+%>
+</body>
+</html>

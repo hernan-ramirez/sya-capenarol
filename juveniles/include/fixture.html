@@ -1,0 +1,161 @@
+<%
+if ($mostrar == "fixture") {
+%>
+ 
+                             <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8" class="TexVer1Blanca"><b> Fixture / Resultados</b></td>
+                                </tr>
+                              </table>
+                              <table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" vspace="0" hspace="0">
+                                <tr bgcolor="#000000" align="center"> 
+                                  <td bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <b>#</b></td>
+                                  <td bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <b>Fecha</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>Local</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>Visitante</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>Resultado</b></td>
+                                </tr>
+  
+<%
+
+$result = mysql_query("select * from partidos");
+
+$num = 0;
+
+while ($row = mysql_fetch_array($result)) {
+
+if (ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $row[date], $regs)) {
+
+    $date = "$regs[3]/$regs[2]";
+
+}
+
+$num++;
+
+%>
+<%
+if ($row[rival] == "Libre") {
+%>
+                              <tr align="center"> 
+                                  <td width="10" bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <% echo $num %></td>
+                                  <td width="50" bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <b><% echo $date %></b></td>
+                                  <td colspan="3" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[rival] %></td>
+                               </tr>
+<%
+} else {
+%>
+	
+                              <tr align="center"> 
+                                  <td width="10" bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <% echo $num %></td>
+                                  <td width="50" bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <% echo $date %></td>
+                                  <td width="90" bgcolor="#F0F4F0" class="TexAri1Negra">
+                                    <% 
+                                    if ($row[local] == "0") {
+                                    echo $row[rival];
+                                    } else {
+                                    echo "Peñarol";
+                                    }
+                                    %></td>
+                                  <td width="90" bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <%
+                                    if ($row[local] == "0") {
+                                    echo "Peñarol";
+                                    } else {
+                                    echo $row[rival];
+                                    }
+                                    %></td>
+                                  <td width="60" bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <%
+                                    if ($row[cargado] == "0"){
+                                    echo "- -";
+                                    } else {
+                                    echo "<a href=\"$PHP_SELF?id=$row[id]&mostrar=fixture\" class=\"TexAri1Negra\"><img src=\"../img/img_general/go.gif\" border=\"0\"> $row[resultado]</a>";
+                                    }
+                                    %></td>
+                                </tr>
+
+
+<%
+  }
+}
+%>
+</table>
+
+
+
+<% 
+} else {
+%>
+
+                        <table width="140" border="0" cellspacing="10" cellpadding="0">
+                          <tr> 
+                            <td> 
+                              <table width="94" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8" class="TexVer1Blanca"><b>Fixture</b></td>
+                                </tr>
+                              </table>
+                              
+      <table width="140" cellspacing="1" cellpadding="1" bgcolor="#000000" bordercolorlight="#000000" bordercolordark="#000000" border="0" align="center">
+        <tr> 
+          <td width="89" bgcolor="#FFFFFF" class="TexAri1Negra"><b>Club</b></td>
+          <td bgcolor="#F8E000" width="42" align="center" class="TexAri1Negra"><b>Fecha</b></td>
+        </tr>
+        <%
+
+$result = mysql_query("select * from partidos where cargado='0'");
+
+$num = 0;
+
+while ($row = mysql_fetch_array($result)) {
+
+$num++;
+
+  if ($num == "7") {
+    break;
+  }
+
+
+if (ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $row[date], $regs)) {
+
+    $date = "$regs[3]/$regs[2]";
+
+}
+
+%> 
+        <tr> 
+          <td width="89" bgcolor="#FFFFFF" class="TexAri1Negra"><% echo $row[rival] %></td>
+          <td bgcolor="#F8E000" width="42" class="TexAri1Negra" align="center"> 
+            <b><% echo $date %></b> </td>
+        </tr>
+        <%
+}
+%> 
+        <tr> 
+          <td bgcolor="#FFFFFF" class="TexAri1Blanca">&nbsp;</td>
+          <td bgcolor="#F8E000" width="42" class="TexAri1Negra" align="center"> 
+            <b><a href="?mostrar=fixture" class="TexAri1Negra">Todos</a></b></td>
+        </tr>
+      </table>
+   </td>
+  </tr>
+</table>
+
+<%
+
+}
+%>
+
+
+
+

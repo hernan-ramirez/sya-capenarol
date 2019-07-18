@@ -1,0 +1,27 @@
+<% 
+
+list($uno, $dos) = explode(" ", $q);
+
+$result = mysql_query ("select * from jugadores where nombre like '%$uno%' or nombre like '%$dos%' or apellido like '%$uno%' or apellido like '%$dos%'");
+
+$num = mysql_affected_rows();
+if ($m <
+while ($row = mysql_fetch_array($result)) {
+%>
+        <tr>
+          <td><img src="../img/img_general/estrellita.gif" width="20" height="18"> 
+            <span class="TexAri1Negra"><a href="javascript:openwin('../jugadores/?id=<% echo $row[id] %>','nivel1','width=350,height=320,scrollbars=1')">
+            <% echo "$row[nombre] $row[apellido]" %></a></span></td>
+        </tr>
+<%
+ }
+%>
+
+
+
+
+
+
+
+
+

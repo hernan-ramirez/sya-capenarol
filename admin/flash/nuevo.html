@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<title>
+</title>
+<style fprolloverstyle>A:hover {color: #FFCC00}
+</style>
+</head>
+
+<body link="#808080" vlink="#808080" alink="#808080">
+
+<% function form($self) { %>
+<center>
+<form action"<% echo $self %>" enctype="multipart/form-data" method="post">
+  <input type="file" name="file" size="20"><br>
+  <br>
+  <input type="hidden" name="accion" value="agregar">
+ <input type="submit" value="Subir">
+</form>
+</center>
+<% } %>
+
+<font size="2" face="verdana">
+<center>
+<% 
+
+if ($accion == "agregar") { 
+  
+  if (isset($file)) {
+
+    if ($file_size == 0) {
+
+        echo "ADVERTENCIA: no ingresó ninguna imagen.";
+
+        form($nota, $size);
+
+      } elseif (!ereg("shockwave", $file_type)) {
+
+        echo "ADVERTENCIA: $file_type no es un formato de imagen válido.";
+
+      } else {
+
+    rename($file, "../../flash/$file_name");
+
+    echo "La imagen fué copiada con éxito en el Servidor."; 
+
+    form($PHP_SELF);
+    
+    }
+
+ } else {
+
+  form($PHP_SELF);
+
+ }
+ 
+} else {
+
+  form($PHP_SELF);
+
+}
+%>
+
+<a href="../flash">
+
+Administrador de Flash</a><br>
+</center>
+</font>
+</body>
+</html>
+
+

@@ -1,0 +1,130 @@
+<% 
+include('../include/connect.inc');
+
+$time = time();
+
+$result = mysql_query("select * from encuestas where nivel='1'"); 
+
+$row = mysql_fetch_array($result);
+
+$encuesta_id = $row[id];
+
+$pregunta = $row[pregunta];
+
+if (isset($checkbox)) {
+  mysql_query("insert into votos values ('','$encuesta_id','$checkbox','$time','$REMOTE_ADDR')");
+}
+
+$result = mysql_query("select * from respuestas where encuesta_id='$encuesta_id' order by id");
+
+$respuestas = mysql_affected_rows();
+
+$count = array();
+
+while ($row = mysql_fetch_array($result)) {
+
+mysql_query("select * from votos where encuesta_id='$encuesta_id' and respuesta_id='$row[id]'");
+
+$count[$row[respuesta]] = mysql_affected_rows();
+
+}
+
+$total = 0;
+
+reset($count);
+
+while (list($key, $value) = each($count)) {
+
+$total = $total + $value; 
+
+}
+
+if (isset($checkbox)) {
+$porciento = 100 / $total;
+}
+
+%>
+<html>
+<head>
+<title>Resultado Encuesta</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../style/general_style.css">
+<STYLE type=text/css>A:link {
+	COLOR: black; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: black; TEXT-DECORATION: none
+}
+</STYLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+function printPage() {
+  if (window.print)
+    window.print()
+  else
+    alert("Su navegador no soporta esta funcion");
+}
+
+// -->
+</SCRIPT>
+<% include('../include/hitbox.inc'); %>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="2" marginheight="2" topmargin="2" leftmargin="2">
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr valign="bottom"> 
+    <td class="TexVer2Negra" width="67"><b>Encuesta</b></td>
+    <td align="right" width="233"><? include "../include/hitbox.inc" ?></td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr> 
+    <td><img src="../img/img_general/spacer.gif" width="300" height="1"></td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td class="TexVer2Negra"><b><? echo $pregunta ?></b>
+      <table width="300" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="#000000"> 
+          <td><img src="../img/img_general/spacer.gif" width="1" height="1"></td>
+        </tr>
+<%
+reset($count);
+while (list($key, $value) = each($count)) {
+$por = $porciento * $value;
+$cgraf = $por * 1.5; 
+%>
+        <tr> 
+          <td> 
+            <table width="300" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td bgcolor="#000000" width="1"><img src="../img/img_general/spacer.gif" width="1" height="15"></td>
+                <td width="100" class="TexVer1Negro"><% echo $key %></td>
+                <td bgcolor="#000000" width="1"><img src="../img/img_general/spacer.gif" width="1" height="15"></td>
+                <td width="150" class="TexVer1Negro"><img src="../img/img_general/medida_encuesta.gif" width="<% echo $cgraf %>" height="12"></td>
+                <td bgcolor="#000000" width="1"><img src="../img/img_general/spacer.gif" width="1" height="15"></td>
+                <td width="46" class="TexVer1Negro" align="center"><% echo round($por, 2); %>%</td>
+                <td bgcolor="#000000" width="1"><img src="../img/img_general/spacer.gif" width="1" height="15"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+		<tr bgcolor="#000000"> 
+          <td><img src="../img/img_general/spacer.gif" width="1" height="1"></td>
+        </tr>
+<%
+}
+%>
+      </table>
+
+      <table width="65" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" align="right">
+        <tr align="center"> 
+          <td><a href="javascript:window.close();"><span class="TexVer1Blanca"><b>cerrar</b></span></a></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

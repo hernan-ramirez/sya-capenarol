@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "drop database capenarol" | /usr/local/mysql/bin/mysql -u root
+echo "create database capenarol" | /usr/local/mysql/bin/mysql -u root
+/usr/local/mysql/bin/mysqldump -u root capenaroladmin | /usr/local/mysql/bin/mysql -u root capenarol

@@ -1,0 +1,75 @@
+<% include('../include/connect.inc'); %>
+<!-- nada -->
+<html>
+<head>
+<%
+if ($nota == "entrevistas") {
+  $titulo = "Entrevista";
+  $tabla = "entrevistas";
+} elseif ($nota == noticias) {
+  if ($nivel == 1) {
+    $titulo = "Nota Principal"; 
+  } else {
+    $titulo = "Pe&ntilde;arol News"; 
+  }
+  $tabla = "noticias";
+}
+%>
+<title><% echo $titulo %></title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../style/general_style.css"></head>
+<% 
+if (isset($id)) {
+
+$result = mysql_query("select titulo,contenido,imagenchica,imagengrande from $tabla where id = '$id'");
+
+} else {
+
+$result = mysql_query("select titulo,contenido,imagenchica,imagengrande from $tabla where nivel = '$nivel'");
+
+}
+
+$noticia = mysql_fetch_array($result);
+%>
+<body bgcolor="#FFFFFF" text="#666666" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<table width="400" border="0" cellspacing="1" cellpadding="1" bgcolor="#F0F0F0">
+  <tr bgcolor="#FFFFFF"> 
+    <td width="400" bgcolor="#F3F3F3" class="TexVer1Negro"> 
+      <table width="233" border="00" cellspacing="0" cellpadding="0" height="33" align="right">
+        <tr> 
+          <td><img src="../img/img_banners/mastercard.gif" width="233" height="33"></td>
+        </tr>
+      </table>
+      <table width="150" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td><? include "../include/hitbox.inc" ?></td>
+        </tr>
+        <tr> 
+          <td class="TexAri2Negro"><b><% echo $titulo %></b></td>
+        </tr>
+      </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr bgcolor="#000000"> 
+          <td><img src="../img/img_general/spacer.gif" width="150" height="1"></td>
+        </tr>
+      </table>
+      <span  class="TexVer2Negra"><b><% echo $noticia[0]; %></b></span> <img src="/img/img_<% echo $nota %>/grandes/<% echo $noticia[3] %>" width="150" height="100" vspace="5" hspace="5" align="left" border="1"><br>
+      <span class="TexVer1Negro"><% echo $noticia[1] %> </span></td>
+  </tr>
+</table>
+<table width="400" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <table width="50" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000" align="right">
+        <tr> 
+          <td height="8" width="50"> 
+            <div align="center"><font size="1"><b><font size="1"><b><font face="Verdana, Arial, Helvetica, sans-serif"><a href="javascript:window.close();"><font color="white">cerrar</font></a></font></b></font></b></font></div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+

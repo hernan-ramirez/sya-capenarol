@@ -1,0 +1,64 @@
+                              <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#FFFFFF"><b> 
+                                    Plantel</b></font></td>
+                                </tr>
+                              </table>
+                              <table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
+                                <tr bgcolor="#F0F4F0"> 
+                                  <td class="TexVer1Blanca" width="240" bgcolor="#999999">Jugador</td>
+                                  <td class="TexAri1Negra" width="40" align="center" bgcolor="#989898"> 
+                                    <div align="center" class="TexVer1Blanca">Pos.</div>
+                                  </td>
+                                </tr>
+                                <% 
+                                $result = mysql_query ("select * from jugadores");
+                                while ($row = mysql_fetch_array($result)) {
+                                %>
+                                <tr bgcolor="<% if ($color == "1") { echo "#D0CCD0"; $color = 0; } else { echo "#F0F4F0"; $color = 1; } %>"> 
+                                  <td width="240"><a href="javascript:openwin('../jugadores/?id=<% echo $row[id] %>','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Negro">
+                                  <% echo "$row[nombre] $row[apellido]" %></a></td>
+				<% 
+				if (ereg("-", $row[puesto])) {
+		  		  list($primero, $segundo) = explode ("-", $row[puesto]); %>
+                                  <td class="TexAri1Negra" width="40" align="center"><% echo substr($primero, 0, 3) %>/<% echo substr($segundo, 0, 4); %></td>
+				<% } else { %>
+                                  <td class="TexAri1Negra" width="40" align="center"><% echo substr($row[puesto], 0, 3); %></td>
+			 	<% } %> 
+                                </tr>
+                                
+                                <%
+                                }
+                                %>
+                              </table>
+                              <br>
+<!--
+                              <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#FFFFFF"><b> 
+                                    Cuerpo T&eacute;cnico</b></font></td>
+                                </tr>
+                              </table>
+                              <table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
+                                <tr bgcolor="#F0F4F0"> 
+                                  <td class="TexVer1Blanca" width="240" bgcolor="#999999">Nombre</td>
+                                  <td class="TexAri1Negra" width="40" align="center" bgcolor="#989898"> 
+                                    <div align="center" class="TexVer1Blanca">Cargo</div>
+                                  </td>
+                                </tr>
+                                 <% 
+                                $result = mysql_query ("select * from tecnicos");
+                                while ($row = mysql_fetch_array($result)) {
+                                %>
+                                <tr bgcolor="<% if ($color == "1") { echo "#D0CCD0"; $color = 0; } else { echo "#F0F4F0"; $color = 1; } %>"> 
+                                  <td width="240" class="TexVer1Negra">
+                                  <% echo "$row[nombre] $row[apellido]" %></td>
+                                  <td class="TexVer1Negra" width="40" align="center"><% echo $row[cargo] %></td>
+                                </tr>
+                                
+                                <%
+                                }
+                                %>
+                              </table>
+
+-->

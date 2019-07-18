@@ -1,0 +1,29 @@
+<%
+$result = mysql_query ("select * from entrevistas where titulo like '%$q%' or contenido like '%$q%'");
+
+$num = $num + mysql_affected_rows();
+
+while ($row = mysql_fetch_array($result)) {
+
+$i ++ ;
+
+if ($i > $m && $i < $m + 10) {
+%>
+        <tr>
+          <td><img src="../img/img_general/estrellita.gif" width="20" height="18"> 
+            <span class="TexAri1Negra">
+            <% echo $i %>.<a href="javascript:openwin('../noticias/?id=<% echo $row[id] %>&nota=entrevistas','nivel1','width=420,height=420,scrollbars=1')">
+            <% echo $row[titulo] %></a> (<% echo date("d/m/y", $row[fecha]); %>)</span></td>
+        </tr>
+<%
+  }
+
+}
+%>
+
+
+
+
+
+
+

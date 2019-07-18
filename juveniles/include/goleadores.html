@@ -1,0 +1,149 @@
+<%
+if ($mostrar == "goleadores") {
+%>
+ 
+                             <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8" class="TexVer1Blanca"><b>Goleadores</b></td>
+                                </tr>
+                              </table>
+                              
+<table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" vspace="0" hspace="0">
+  <tr bgcolor="#000000" align="center"> 
+                                  
+    <td bgcolor="#D0CCD0" class="TexAri1Negra" width="220"> <b>Nombre</b></td>
+                                  
+    <td bgcolor="#F0F4F0" class="TexAri1Negra" width="60"> <b>Goles</b></td>
+                                </tr>
+  
+<%
+
+$jugador = array();
+
+$result = mysql_query("select * from jugadores");
+
+
+while ($row = mysql_fetch_array($result)) {
+
+$goles = mysql_query("select count(*) from goles where jugador_id='$row[id]'");
+
+$gol = mysql_fetch_row($goles);
+
+$jugador[$row[id]] = $gol[0];
+
+}
+
+arsort($jugador);
+
+while (list ($id, $golnum) = each($jugador)) {
+
+$result = mysql_query("select id,nombre,apellido from jugadores where id='$id'");
+
+$row = mysql_fetch_array($result);
+
+%>
+	
+                              <tr align="center"> 
+                                  
+    <td width="220" bgcolor="#D0CCD0" class="TexAri1Negra" align="left"> <a href="javascript:openwin('../jugadores/?id=<% echo $row[id] %>','ficha_partido','width=350,height=314,scrollbars=1')"  class="TexAri1Negra"><% echo $row[nombre] %> 
+      <% echo $row[apellido] %></a></td>
+                                  
+    <td width="60" bgcolor="#F0F4F0" class="TexAri1Negra"> <% echo $golnum %></td>
+                              </tr>
+
+
+<%
+}
+%>
+</table>
+
+
+
+<% 
+} else {
+%>
+
+                        <table width="140" border="0" cellspacing="10" cellpadding="0">
+                          <tr> 
+                            <td> 
+                              <table width="94" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#FFFFFF"><b>Goleadores</b></font></td>
+                                </tr>
+                              </table>
+                              
+      <table width="140" cellspacing="1" cellpadding="1" bgcolor="#000000" bordercolorlight="#000000" bordercolordark="#000000" border="0" align="center">
+        <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>Nombre</b></font></td>
+                                  <td bgcolor="#F8E000" width="42"> 
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#000000"><b>Goles</b></font></div>
+                                  </td>
+                                </tr>
+
+<%
+
+$jugador = array();
+
+$result = mysql_query("select * from jugadores");
+
+
+while ($row = mysql_fetch_array($result)) {
+
+$goles = mysql_query("select count(*) from goles where jugador_id='$row[id]'");
+
+$gol = mysql_fetch_row($goles);
+
+$jugador[$row[id]] = $gol[0];
+
+}
+
+$num = 0;
+
+arsort($jugador);
+
+while (list ($id, $golnum) = each($jugador)) {
+
+$num++;
+
+if ($num > 5) {
+
+break;
+
+}
+
+$result = mysql_query("select nombre,apellido from jugadores where id='$id'");
+
+$row = mysql_fetch_array($result);
+
+%>
+
+                                <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><% echo substr($row[nombre], 0, 1); %>. <% echo $row[apellido] %></font></td>
+                                  <td bgcolor="#F8E000"> 
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><% echo $golnum %></b></font></div>
+                                  </td>
+                                </tr>
+<%
+}
+%>
+                                <tr>
+                                  
+          <td bgcolor="#FFFFFF" class="TexAri1Blanca" width="90">&nbsp;</td>
+                                  <td bgcolor="#F8E000" width="42">
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><a href="?mostrar=goleadores"  class="TexAri1Negra">Todos</a></b></font></div>
+                                  </td>
+                                </tr>
+                              </table>
+                              </td>
+                              </tr>
+                            </table>
+<%
+
+}
+%>
+
+
+
+

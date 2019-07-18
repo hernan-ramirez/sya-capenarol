@@ -1,0 +1,717 @@
+<%
+
+
+
+include('../include/connect.inc'); 
+
+
+
+function imagenes($jugador, $partido) {
+
+
+
+mysql_query ("select * from amonestados where partido_id='$partido[id]' and jugador_id='$jugador[id]'");
+
+
+
+$a = mysql_affected_rows();
+
+
+
+mysql_query ("select * from expulsados where partido_id='$partido[id]' and jugador_id='$jugador[id]'");
+
+
+
+$r = mysql_affected_rows();
+
+
+
+mysql_query ("select * from cambios where partido_id='$partido[id]' and sale_id='$jugador[id]'");
+
+
+
+$c = mysql_affected_rows();
+
+
+
+if ($a == "1" && $r == "1") {
+
+
+
+$img = "<img src=\"../img/img_general/tarj_doble.gif\" width=\"16\" height=\"16\" border=\"0\">";
+
+
+
+} elseif ($a == "1") {
+
+
+
+$img = "<img src=\"../img/img_general/tarj_amarilla.gif\" width=\"16\" height=\"16\" border=\"0\">";
+
+
+
+} elseif ($r == "1") {
+
+
+
+$img = "<img src=\"../img/img_general/tarj_roja.gif\" width=\"16\" height=\"16\" border=\"0\">";
+
+
+
+}
+
+
+
+if ($c == "1") {
+
+
+
+$img .= "<img src=\"../img/img_general/cambio.gif\" width=\"16\" height=\"16\" border=\"0\">";
+
+
+
+}
+
+
+
+
+
+
+
+return $img;
+
+
+
+
+
+
+
+}
+
+
+
+function user_data($posicion, $id) {
+
+
+
+if (empty($id)) {
+
+
+
+$result = mysql_query("select * from partidos where cargado='1' order by date desc");
+
+
+
+} else {
+
+
+
+$result = mysql_query("select * from partidos where id='$id'");
+
+
+
+}
+
+
+
+$partidodata = mysql_fetch_array($result);
+
+
+
+$resultado = mysql_query("select * from titulares where partido_id='$partidodata[id]' order by numero asc");
+
+
+
+$i = 1;
+
+
+
+while ($row = mysql_fetch_array($resultado)) {
+
+
+
+  $data[$i] = "$row[jugador_id]";
+
+
+
+if ($i == $posicion) {
+
+
+
+$result = mysql_query("select * from jugadores where id='$row[jugador_id]'");
+
+
+
+$nombre = mysql_fetch_array($result);
+
+
+
+$data = array(
+
+
+
+	"id" => "$row[jugador_id]",
+
+	"numero" => "$row[numero]",
+
+	"nombre" => "$nombre[nombre]",
+
+	"apellido" => "$nombre[apellido]" );
+
+	
+
+	return $data;
+
+
+
+}
+
+
+
+  $i++;
+
+
+
+  }
+
+
+
+}
+
+
+
+$uno = user_data("2","$id");
+
+$dos = user_data("1","$id");
+
+$tres = user_data("3","$id");
+
+$cuatro = user_data("4","$id");
+
+$cinco = user_data("5","$id");
+
+$seis = user_data("6","$id");
+
+$siete = user_data("7","$id");
+
+$ocho = user_data("8","$id");
+
+$nueve = user_data("9","$id");
+
+$diez = user_data("10","$id");
+
+$once = user_data("11","$id");
+
+
+
+if (!isset($id)) {
+
+
+
+$result = mysql_query("select * from partidos where cargado='1' order by date desc");
+
+
+
+} else {
+
+
+
+$result = mysql_query("select * from partidos where id='$id'");
+
+
+
+}
+
+
+
+$partidodata = mysql_fetch_array($result);
+
+
+
+list($goleslocal, $golesvisitante) = explode("-", $partidodata[resultado]);
+
+
+
+mysql_query("select * from partidos where cargado='1' and campeonato='l'");
+
+
+
+$fechanum = mysql_affected_rows();
+
+%>
+
+<html>
+
+<head>
+
+<title>Plantel de Primera División</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+
+<!--
+
+a:link {  text-decoration: none}
+
+a:visited {  text-decoration: none}
+
+-->
+
+</style>
+
+<link rel="stylesheet" href="../style/general_style.css"></head>
+
+<script language="JavaScript">
+
+<!--
+
+function openwin(theURL,winName,features) {
+
+  window.open(theURL,winName,features);
+
+}
+
+//-->
+
+</script>
+
+
+
+<body bgcolor="#FFFFFF" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+
+<div id="defizquierda" style="position:absolute; width:90px; height:15px; z-index:2; left: 513px; top: 176px; visibility: visible" class="TexVer1Gris"><a href="javascript:openwin('../jugadores/?id=<% echo $uno[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><% echo imagenes($uno, $partidodata); echo substr($uno[apellido], 0, 12); %></a></div>
+
+<div id="Arco" style="position:absolute; width:90px; height:1px; z-index:1; left: 581px; top: 102px; visibility: visible"> 
+
+  <div align="center" class="TexVer1Gris"><a href="javascript:openwin('../jugadores/?id=<% echo $dos[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><% echo imagenes($dos, $partidodata); echo substr($dos[apellido], 0, 12); %></a></div>
+
+</div>
+
+<div id="defmedioizquierda" style="position:absolute; width:90px; height:1px; z-index:3; left: 535px; top: 157px; visibility: visible"> 
+
+  <div align="right" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $tres[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($tres, $partidodata);  echo substr($tres[apellido], 0, 12); %></a></div>
+
+              </div>
+
+<div id="defmedioder" style="position:absolute; width:90px; height:1px; z-index:4; left: 636px; top: 158px; visibility: visible" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $cuatro[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($cuatro, $partidodata);  echo  substr($cuatro[apellido], 0, 12); %></a></div>
+
+              
+
+<div id="defder" style="position:absolute; width:90px; height:1px; z-index:5; left: 656px; top: 178px; visibility: visible"> 
+
+  <div class="TexVer1Gris">
+
+    <div align="right"><a href="javascript:openwin('../jugadores/?id=<% echo $cinco[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($cinco, $partidodata);  echo substr($cinco[apellido], 0, 10);%></a></div>
+
+  </div>
+
+              </div>
+
+              
+
+<div id="medizq" style="position:absolute; width:90px; height:1px; z-index:6; left: 509px; top: 245px; visibility: visible" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $seis[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($seis, $partidodata);   echo substr($seis[apellido], 0, 12);%></a> 
+
+</div>
+
+              
+
+<div id="medcentro" style="position:absolute; width:90px; height:1px; z-index:7; left: 585px; top: 221px; visibility: visible"> 
+
+  <div align="center" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $siete[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($siete, $partidodata);  echo substr($siete[apellido], 0, 12); %></a></div>
+
+              </div>
+
+              
+
+<div id="medder" style="position:absolute; width:90px; height:1px; z-index:8; left: 652px; top: 244px; visibility: visible"> 
+
+  <div align="right" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $ocho[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($ocho, $partidodata);  echo substr($ocho[apellido], 0, 12) %></a></div>
+
+              </div>
+
+              
+
+<div id="medmed" style="position:absolute; width:90px; height:1px; z-index:9; left: 587px; top: 295px; visibility: visible"> 
+
+  <div align="center" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $nueve[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($nueve, $partidodata);  echo substr($nueve[apellido], 0, 12); %></a></div>
+
+</div>
+
+<div id="delizq" style="position:absolute; width:90px; height:1px; z-index:10; left: 532px; top: 345px; visibility: visible" class="TexVer1Gris"><a href="javascript:openwin('../jugadores/?id=<% echo $diez[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($diez, $partidodata);  echo substr($diez[apellido], 0, 12); %></a></div>
+
+          
+
+<div id="delder" style="position:absolute; width:90px; height:1px; z-index:11; visibility: visible; left: 639px; top: 345px"> 
+
+  <div align="right" class="TexVer1Gris"><img src="../img/img_general/spacer_cancha.gif" width="16" height="16"><a href="javascript:openwin('../jugadores/?id=<% echo $once[id] %>&mostrar=seguimiento','ficha_partido','width=335,height=314,scrollbars=auto')" class="TexVer1Blanca"><%echo imagenes($once, $partidodata);  echo substr($once[apellido], 0, 12); %></a></div>
+
+</div>
+
+<? include ("header.php3") ?>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC00">
+
+  <tr valign="top"> 
+
+    <td> 
+
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" vspace="0" hspace="0">
+
+        <tr> 
+
+          <td width="50%" height="371"> 
+
+            <table width="756" border="0" cellspacing="0" cellpadding="0">
+
+              <tr> 
+
+                <td width="499" valign="top"> 
+
+                  <table width="499" border="0" cellspacing="0" cellpadding="0" align="center">
+
+                    <tr> 
+
+                      <td width="307" align="left" valign="top" height="399">
+
+						<table width="280" border="0" cellspacing="10" cellpadding="0" align="right">
+
+                          <tr> 
+
+                            <td>
+
+<%
+
+ 
+
+if ($mostrar == "fixture") {
+
+
+
+include ('include/fixture.html');
+
+
+
+} elseif ($mostrar == "posiciones") {
+
+
+
+include ('include/posiciones.html');
+
+
+
+} elseif ($mostrar == "goleadores") {
+
+
+
+include ('include/goleadores.html');
+
+
+
+} elseif ($mostrar == "tarjetas") {
+
+
+
+include ('include/tarjetas.html');
+
+
+
+} elseif ($mostrar == "plantel") {
+
+
+
+include ('include/plantel.html');
+
+
+
+}
+
+
+
+
+
+%>
+
+                           </td>
+
+                          </tr>
+
+                        </table>
+
+                      </td>
+
+                      <td width="169" align="left" valign="top" height="399"> 
+
+                        <table width="140" border="0" cellspacing="10" cellpadding="0">
+
+                          <tr> 
+
+                            <td> 
+
+
+
+<%
+
+
+
+if ($mostrar == "fixture") {
+
+
+
+include ('include/posiciones.html');
+
+
+
+} elseif ($mostrar == "posiciones") {
+
+
+
+include ('include/fixture.html');
+
+
+
+} elseif ($mostrar == "goleadores") {
+
+
+
+include ('include/tarjetas.html');
+
+
+
+} else {
+
+
+
+include ('include/goleadores.html');
+
+
+
+}
+
+	
+
+%>
+
+
+
+                              <br>
+
+ 
+
+ <%
+
+
+
+if ($mostrar == "fixture") {
+
+
+
+include ('include/goleadores.html');
+
+
+
+} elseif ($mostrar == "posiciones") {
+
+
+
+include ('include/tarjetas.html');
+
+
+
+} elseif ($mostrar == "goleadores") {
+
+
+
+include ('include/fixture.html');
+
+
+
+} else {
+
+
+
+include ('include/posiciones.html');
+
+
+
+}	
+
+%>
+
+
+
+                              <br>
+
+ <%
+
+
+
+if ($mostrar == "fixture") {
+
+
+include ('include/tarjetas.html');
+
+} elseif ($mostrar == "posiciones") {
+
+include ('include/goleadores.html');
+
+} elseif ($mostrar == "goleadores") {
+
+include ('include/posiciones.html');
+
+} else {
+
+include ('include/fixture.html');
+
+}
+
+
+
+
+
+
+
+
+
+%>
+
+
+
+					<br>
+
+                            </td>
+
+                          </tr>
+
+                        </table>
+
+                      </td>
+
+                      <td width="3" align="left" valign="top" height="399" bgcolor="#000000">&nbsp;</td>
+
+                      <td width="10" align="left" valign="top" height="399" bgcolor="#FFFFFF">&nbsp;</td>
+
+                      <td width="7" align="left" valign="top" height="399" bgcolor="#000000">&nbsp;</td>
+
+                    </tr>
+
+                  </table>
+
+                  
+
+                </td>
+
+                <td width="257" valign="top" bgcolor="#000000"> <br>
+
+                  <table width="200" border="0" cellspacing="0" cellpadding="0">
+
+                    <tr bgcolor="#F8D400"> 
+
+                      <td bgcolor="#000000" height="8" background="../img/img_general/spacer.gif" class="TexAri1Blanca"> 
+
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolorlight="#CCCCCC" bordercolordark="#666666" vspace="0" hspace="0">
+
+                          <tr bgcolor="#000000" align="center"> 
+
+                            <td class="<% if ($partidodata[local]) { echo "TexVer1Naranja"; } else { echo "TexVer1Blanca"; } %>"><% if($partidodata[local]) { echo "Pe&ntilde;arol"; } else { echo "$partidodata[rival]"; } %><span class="<% if (!$partidodata[local]) { echo "TexVer1Naranja"; } else { echo "TexVer1Blanca"; } %>"><% if(!$partidodata[local]) { echo "-Pe&ntilde;arol"; } else { echo "-$partidodata[rival]"; } %></span>
+
+                              <span class="TexAri1Gris">(Fecha <% echo $partidodata[id] %>)</span></td>
+
+                          </tr>
+
+                        </table>
+
+                      </td>
+
+                      <td width="30" bgcolor="#000000" height="8"> 
+
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolorlight="#CCCCCC" bordercolordark="#666666" vspace="0" hspace="0">
+
+                          <tr bgcolor="#666666" align="center"> 
+
+                            <td class="<% if ($partidodata[local]) { echo "TexVer1Naranja"; } else { echo "TexVer1Blanca"; } %>"><b><% echo $goleslocal %><span class="<% if (!$partidodata[local]) { echo "TexVer1Naranja"; } else { echo "TexVer1Blanca"; } %>">-<% echo $golesvisitante %></span></b> </td>
+
+                          </tr>
+
+                        </table>
+
+                      </td>
+
+                    </tr>
+
+                  </table>
+
+                  <img src="../img/img_general/cancha.gif" width="267" height="317" vspace="0" hspace="0"> 
+
+                  <table width="267" border="0" cellspacing="0" cellpadding="0">
+
+                    <tr bgcolor="#000000"> 
+
+                      <td> 
+
+                        <table width="150" border="1" cellspacing="0" cellpadding="0" bordercolorlight="#CCCCCC" bordercolordark="#666666" vspace="0" hspace="0" align="right">
+
+                          <tr bgcolor="#000000" align="center"> 
+
+                            <td width="89"><a href="javascript:openwin('ficha?id=<% echo $partidodata[id] %>','ficha_partido','width=320,height=380,scrollbars=1')"><span class="TexAri1Gris">Ficha 
+
+                              Partido</span></a></td>
+
+                            <td width="89"><a href="<% echo $PHP_SELF %>?mostrar=plantel"><span class="TexAri1Gris">Plantel</span></a></td>
+
+                          </tr>
+
+                        </table>
+
+                      </td>
+
+                    </tr>
+
+                  </table>
+
+                </td>
+
+              </tr>
+
+            </table>
+
+          </td>
+
+          <td valign="top" height="371" bgcolor="#000000"><? include "../include/hitbox.inc" ?> 
+          </td>
+
+        </tr>
+
+      </table>
+
+      
+
+    </td>
+
+  </tr>
+
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td><img src="../img/img_general/blanco.gif" width="8" height="2"></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#999999">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td><img src="../img/img_general/blanco.gif" width="8" height="2"></td>
+  </tr>
+</table>
+<% include("../include/foother.php3") %>
+
+</body>
+
+</html>
+
+
+
+
+
+
+

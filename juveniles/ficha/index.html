@@ -1,0 +1,256 @@
+<% include('../../include/connect.inc'); %>
+
+<html>
+<head>
+<title>Ficha del Partido</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../../style/general_style.css">
+</head>
+<style type="text/css">
+<!--
+a:link {  text-decoration: none}
+a:visited {  text-decoration: none}
+-->
+</style>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr valign="top"> 
+    <td> <% 
+    if (!isset($id)) { 
+    
+    $result = mysql_query("select * from partidos where cargado='1' order by date desc"); 
+    
+    $partido = mysql_fetch_array($result);
+    
+    } else {
+    
+    $result = mysql_query("select * from partidos where id='$id'"); 
+    
+    $partido = mysql_fetch_array($result);
+    
+    }
+    
+    $goles = explode("-", $partido[resultado]);
+    
+    %> 
+      <table width="150" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td bgcolor="#000000" align="center" class="TexVer1Blanca"><% if ($partido[local]) { echo "C. A. Pe&ntilde;arol"; } else { echo "$partido[rival]"; } %></td>
+          <td width="25" bgcolor="<% if ($partido[local]) { echo "#FFCC00"; } else { echo "#999999"; } %>" align="center" class="TexVer1Negro"> 
+            <% echo $goles[0] %></td>
+        </tr>
+      </table>
+    </td>
+    <td> 
+      <table width="150" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td width="25" bgcolor="<% if ($partido[local]) { echo "#999999"; } else { echo "#FFCC00"; } %>" align="center" class="TexVer1Negro"> 
+            <% echo $goles[1] %></td>
+          <td bgcolor="#000000" align="center" class="TexVer1Blanca"><% if (!$partido[local]) { echo "C. A. Pe&ntilde;arol"; } else { echo "$partido[rival]"; } %>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr valign="top"> 
+    <td> <% 
+if ($partido[local]) {
+%> 
+      <table border="0" cellspacing="1" cellpadding="1" width="150">
+        <tr bgcolor="#e0e0e0"> 
+          <td width="25" bgcolor="#CCCCCC" align="center" class="TexAri1Negra">#</td>
+          <td width="125" bgcolor="#CCCCCC" class="TexAri1Negra">Jugador</td>
+        </tr>
+        <%
+        $color = 1;
+        $result = mysql_query("select * from titulares where partido_id='$partido[id]' order by numero");
+        while($row = mysql_fetch_array($result)) {
+        $resultado = mysql_query ("select nombre,apellido from jugadores where id='$row[jugador_id]'");
+        $data = mysql_fetch_array($resultado);
+        %>
+        <tr <%
+        if ($color == 1) {
+          $color = 0;
+        } else {
+          echo "bgcolor=\"#efefe7\"";
+          $color = 1;
+        } %>> 
+          <td width="25" align="center" class="TexAri1Negra"><% echo $row[numero] %></td>
+          <td width="125" class="TexAri1Negra"><% echo "$data[nombre] $data[apellido]" %></td>
+        </tr>
+ 
+	<%
+	}
+	%>
+
+       <tr bgcolor="#efefe7"> 
+          <td width="25" class="TexAri1Negra">DT</td>
+          <td width="125" class="TexAri1Negra"><% echo $partido[DT] %></td>
+        </tr>
+
+      </table>
+
+<%   
+} else {
+%>
+
+      <table border="0" cellspacing="1" cellpadding="1" width="150">
+        <tr bgcolor="#e0e0e0"> 
+          <td width="25" bgcolor="#CCCCCC" align="center" class="TexAri1Negra">#</td>
+          <td width="125" bgcolor="#CCCCCC" class="TexAri1Negra">Jugador</td>
+        </tr>
+        <%
+        $color = 1;
+        $result = mysql_query("select * from jugadoresr where partido_id='$partido[id]' order by numero");
+        while($row = mysql_fetch_array($result)) {
+        %>
+        <tr <%
+        if ($color == 1) {
+          $color = 0;
+        } else {
+          echo "bgcolor=\"#efefe7\"";
+          $color = 1;
+        } %>> 
+          <td width="25" align="center" class="TexAri1Negra"><% echo $row[numero] %></td>
+          <td width="125" class="TexAri1Negra"><% echo "$row[nombre]" %></td>
+        </tr>
+ 
+	<%
+	}
+	%>
+
+       <tr bgcolor="#efefe7"> 
+          <td width="25" class="TexAri1Negra">DT</td>
+          <td width="125" class="TexAri1Negra"><% echo $partido[DTrival] %></td>
+        </tr>
+
+      </table>
+<%
+}
+%>
+
+ </td>
+    <td> <% 
+if (!$partido[local]) {
+%> 
+      <table border="0" cellspacing="1" cellpadding="1" width="150">
+        <tr bgcolor="#e0e0e0"> 
+          <td width="25" bgcolor="#CCCCCC" align="center" class="TexAri1Negra">#</td>
+          <td width="125" bgcolor="#CCCCCC" class="TexAri1Negra">Jugador</td>
+        </tr>
+        <%
+        $color = 1;
+        $result = mysql_query("select * from titulares where partido_id='$partido[id]' order by numero");
+        while($row = mysql_fetch_array($result)) {
+        $resultado = mysql_query ("select nombre,apellido from jugadores where id='$row[jugador_id]'");
+        $data = mysql_fetch_array($resultado);
+        %>
+        <tr <%
+        if ($color == 1) {
+          $color = 0;
+        } else {
+          echo "bgcolor=\"#efefe7\"";
+          $color = 1;
+        } %>> 
+          <td width="25" align="center" class="TexAri1Negra"><% echo $row[numero] %></td>
+          <td width="125" class="TexAri1Negra"><% echo "$data[nombre] $data[apellido]" %></td>
+        </tr>
+ 
+	<%
+	}
+	%>
+
+       <tr bgcolor="#efefe7"> 
+          <td width="25" class="TexAri1Negra">DT</td>
+          <td width="125" class="TexAri1Negra"><% echo $partido[DT] %></td>
+        </tr>
+
+      </table>
+
+<%   
+} else {
+%>
+
+      <table border="0" cellspacing="1" cellpadding="1" width="150">
+        <tr bgcolor="#e0e0e0"> 
+          <td width="25" bgcolor="#CCCCCC" align="center" class="TexAri1Negra">#</td>
+          <td width="125" bgcolor="#CCCCCC" class="TexAri1Negra">Jugador</td>
+        </tr>
+        <%
+        $color = 1;
+        $result = mysql_query("select * from jugadoresr where partido_id='$partido[id]' order by numero");
+        while($row = mysql_fetch_array($result)) {
+        %>
+        <tr <%
+        if ($color == 1) {
+          $color = 0;
+        } else {
+          echo "bgcolor=\"#efefe7\"";
+          $color = 1;
+        } %>> 
+          <td width="25" align="center" class="TexAri1Negra"><% echo $row[numero] %></td>
+          <td width="125" class="TexAri1Negra"><% echo "$row[nombre]" %></td>
+        </tr>
+ 
+	<%
+	}
+	%>
+
+       <tr bgcolor="#efefe7"> 
+          <td width="25" class="TexAri1Negra">DT</td>
+          <td width="125" class="TexAri1Negra"><% echo $partido[DTrival] %></td>
+        </tr>
+
+      </table>
+<%
+}
+%>
+
+    </td>
+  </tr>
+</table>
+
+
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td bgcolor="#000000" class="TexVer1Blanca" colspan="2">Goles</td>
+  </tr>
+  <tr valign="top"> 
+    <td> <% include('include/goles.html'); %> </td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td bgcolor="#000000" class="TexVer1Blanca" colspan="2">Cambios</td>
+  </tr>
+  <tr valign="top"> 
+    <td> <% include('include/cambios.html'); %> </td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td bgcolor="#000000" class="TexVer1Blanca" colspan="2">Amonestados</td>
+  </tr>
+  <tr valign="top"> 
+    <td> <% include('include/amonestados.html'); %> </td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td bgcolor="#000000" class="TexVer1Blanca" colspan="2">Expulsados</td>
+  </tr>
+  <tr valign="top"> 
+    <td> <% include('include/expulsados.html'); %> </td>
+  </tr>
+</table>
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td bgcolor="#000000" class="TexVer1Blanca"> &Aacute;rbitros<? include "../../include/hitbox.inc" ?></td>
+  </tr>
+  <tr valign="top"> 
+    <td class="TexAri1Negra">Arbitros: <% echo $partido[arbitros] %> 
+  </tr>
+</table>
+<? include "../../include/foother_ow.php3" ?>
+</body>
+</html>

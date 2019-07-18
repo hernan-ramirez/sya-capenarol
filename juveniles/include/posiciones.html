@@ -1,0 +1,139 @@
+<%
+if ($mostrar == "posiciones") {
+%>
+ 
+                             <table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8" class="TexVer1Blanca"><b>Posiciones</b></td>
+                                </tr>
+                              </table>
+                              <table width="280" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" vspace="0" hspace="0">
+                                <tr bgcolor="#000000" align="center"> 
+                                  <td bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <b>Equipo</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>J</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>G</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>E</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>P</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>GF</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>GC</b></td>
+                                  <td bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <b>Pts.</b></td>
+                                </tr>
+  
+<%
+
+$result = mysql_query("select * from posiciones order by pts desc, gf desc, gc");
+
+$num = 0;
+
+while ($row = mysql_fetch_array($result)) {
+
+if (ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})", $row[date], $regs)) {
+
+    $date = "$regs[3]/$regs[2]";
+
+}
+
+$num++;
+
+%>
+	                          <tr bgcolor="#000000" align="center"> 
+                                  <td bgcolor="#D0CCD0" class="TexAri1Negra"> 
+                                    <b><% echo $row[nombre] %></b></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra"> 
+                                    <% echo $row[j] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[g] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[e] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[p] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[gf] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[gc] %></td>
+                                  <td width="20" bgcolor="#F0F4F0" class="TexAri1Negra">
+						<% echo $row[pts] %></td>
+                                </tr>
+
+
+<%
+}
+%>
+</table>
+
+
+
+<% 
+} else {
+%>
+
+                        <table width="140" border="0" cellspacing="10" cellpadding="0">
+                          <tr> 
+                            <td> 
+                              <table width="94" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+                                <tr> 
+                                  <td height="8"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#FFFFFF"><b>Posiciones</b></font></td>
+                                </tr>
+                              </table>
+                              
+      <table width="140" cellspacing="1" cellpadding="1" bgcolor="#000000" bordercolorlight="#000000" bordercolordark="#000000" border="0" align="center">
+        <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>Club</b></font></td>
+                                  <td bgcolor="#F8E000" width="42"> 
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#000000"><b>Pts.</b></font></div>
+                                  </td>
+                                </tr>
+
+<%
+
+$result = mysql_query("select * from posiciones order by pts desc, gf desc, gc");
+
+$num = 0;
+
+while ($row = mysql_fetch_array($result)) {
+
+$num++;
+
+  if ($num == "7") {
+    break;
+  }
+
+%>
+                                <tr> 
+                                  
+          <td width="90" bgcolor="#FFFFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><% echo $row[nombre] %></font></td>
+                                  <td bgcolor="#F8E000" width="42"> 
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><B><% echo $row[pts] %></b></font></div>
+                                  </td>
+                                </tr>
+<%
+}
+%>
+                                <tr>
+                                  
+          <td bgcolor="#FFFFFF" class="TexAri1Blanca" width="90">&nbsp;</td>
+                                  <td bgcolor="#F8E000" width="42">
+                                    <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b><a href="?mostrar=posiciones"  class="TexAri1Negra">Todos</a></b></font></div>
+                                  </td>
+                                </tr>
+                              </table>
+                              </td>
+                              </tr>
+                            </table>
+<%
+
+}
+%>
+
+
+
+
